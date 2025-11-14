@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Management - Admin Dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Staff Allocation System</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="overview.html" class="menu-item">
+                    <i class="fas fa-chart-pie"></i> Overview
+                </a>
+                <a href="staff-management.html" class="menu-item active">
+                    <i class="fas fa-users"></i> Staff Management
+                </a>
+                <a href="duties.html" class="menu-item">
+                    <i class="fas fa-tasks"></i> Duties & Allocation
+                </a>
+                <a href="attendance.html" class="menu-item">
+                    <i class="fas fa-calendar-check"></i> Attendance
+                </a>
+                <a href="performance.html" class="menu-item">
+                    <i class="fas fa-chart-line"></i> Performance
+                </a>
+                <a href="reports.html" class="menu-item">
+                    <i class="fas fa-file-alt"></i> Reports
+                </a>
+                <a href="settings.html" class="menu-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Navigation -->
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-users"></i> Staff Management</h1>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">System Administrator</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">SA</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content">
+                <div class="d-flex justify-between align-center mb-3">
+                    <h2>All Staff Members</h2>
+                    <button class="btn btn-primary" onclick="showAddStaffModal()">
+                        <i class="fas fa-plus"></i> Add New Staff
+                    </button>
+                </div>
+
+                <!-- Staff Management Tools -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Filter by Department</label>
+                                <select class="form-control" onchange="filterStaffByDepartment(this.value)">
+                                    <option value="">All Departments</option>
+                                    <option value="cleaning">Cleaning</option>
+                                    <option value="nursing">Nursing</option>
+                                    <option value="laboratory">Laboratory</option>
+                                    <option value="administrative">Administrative</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label>Filter by Status</label>
+                                <select class="form-control" onchange="filterStaffByStatus(this.value)">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="on_leave">On Leave</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label>Search Staff</label>
+                                <input type="text" class="form-control" placeholder="Search by name or ID..." onkeyup="searchStaff(this.value)">
+                            </div>
+                            <div class="col-3">
+                                <label>&nbsp;</label>
+                                <button class="btn btn-success" style="width: 100%;" onclick="exportStaffData()">
+                                    <i class="fas fa-download"></i> Export Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Staff Table -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Staff ID</th>
+                                        <th>Name</th>
+                                        <th>Department</th>
+                                        <th>Position</th>
+                                        <th>Contact</th>
+                                        <th>Join Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>STF001</td>
+                                        <td>
+                                            <div class="staff-cell">
+                                                <div class="staff-avatar-sm">JS</div>
+                                                John Smith
+                                            </div>
+                                        </td>
+                                        <td>Cleaning</td>
+                                        <td>Staff Member</td>
+                                        <td>john@hospital.com<br>+1 234-567-8900</td>
+                                        <td>2023-01-15</td>
+                                        <td><span class="medical-badge badge-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm" onclick="editStaff('STF001')">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-sm" onclick="viewStaff('STF001')">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-sm" onclick="deleteStaff('STF001')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>STF002</td>
+                                        <td>
+                                            <div class="staff-cell">
+                                                <div class="staff-avatar-sm">SJ</div>
+                                                Sarah Johnson
+                                            </div>
+                                        </td>
+                                        <td>Nursing</td>
+                                        <td>Senior Staff</td>
+                                        <td>sarah@hospital.com<br>+1 234-567-8901</td>
+                                        <td>2023-02-20</td>
+                                        <td><span class="medical-badge badge-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>STF003</td>
+                                        <td>
+                                            <div class="staff-cell">
+                                                <div class="staff-avatar-sm">MD</div>
+                                                Mike Davis
+                                            </div>
+                                        </td>
+                                        <td>Laboratory</td>
+                                        <td>Technician</td>
+                                        <td>mike@hospital.com<br>+1 234-567-8902</td>
+                                        <td>2023-03-10</td>
+                                        <td><span class="medical-badge badge-warning">On Leave</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>STF004</td>
+                                        <td>
+                                            <div class="staff-cell">
+                                                <div class="staff-avatar-sm">EW</div>
+                                                Emily Wilson
+                                            </div>
+                                        </td>
+                                        <td>Cleaning</td>
+                                        <td>Staff Member</td>
+                                        <td>emily@hospital.com<br>+1 234-567-8903</td>
+                                        <td>2023-04-05</td>
+                                        <td><span class="medical-badge badge-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>STF005</td>
+                                        <td>
+                                            <div class="staff-cell">
+                                                <div class="staff-avatar-sm">RB</div>
+                                                Robert Brown
+                                            </div>
+                                        </td>
+                                        <td>Administrative</td>
+                                        <td>Coordinator</td>
+                                        <td>robert@hospital.com<br>+1 234-567-8904</td>
+                                        <td>2023-05-12</td>
+                                        <td><span class="medical-badge badge-danger">Inactive</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="pagination">
+                            <button class="btn btn-outline btn-sm">Previous</button>
+                            <span class="page-numbers">
+                                <button class="page-btn active">1</button>
+                                <button class="page-btn">2</button>
+                                <button class="page-btn">3</button>
+                            </span>
+                            <button class="btn btn-outline btn-sm">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Staff Statistics -->
+                <div class="row mt-4">
+                    <div class="col-3">
+                        <div class="stat-card mini primary">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-value">35</div>
+                            <div class="stat-label">Cleaning Staff</div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="stat-card mini success">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-nurse"></i>
+                            </div>
+                            <div class="stat-value">25</div>
+                            <div class="stat-label">Nursing Staff</div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="stat-card mini warning">
+                            <div class="stat-icon">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <div class="stat-value">20</div>
+                            <div class="stat-label">Laboratory Staff</div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="stat-card mini info">
+                            <div class="stat-icon">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Admin Staff</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Staff Modal -->
+    <div id="addStaffModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Staff Member</h3>
+                <span class="close" onclick="closeAddStaffModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="addStaffForm">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>First Name *</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-col">
+                            <label>Last Name *</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Email *</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="form-col">
+                            <label>Phone *</label>
+                            <input type="tel" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Department *</label>
+                            <select class="form-control" required>
+                                <option value="">Select Department</option>
+                                <option value="cleaning">Cleaning</option>
+                                <option value="nursing">Nursing</option>
+                                <option value="laboratory">Laboratory</option>
+                                <option value="administrative">Administrative</option>
+                            </select>
+                        </div>
+                        <div class="form-col">
+                            <label>Position *</label>
+                            <select class="form-control" required>
+                                <option value="">Select Position</option>
+                                <option value="staff">Staff Member</option>
+                                <option value="senior_staff">Senior Staff</option>
+                                <option value="supervisor">Supervisor</option>
+                                <option value="coordinator">Coordinator</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Join Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="form-col">
+                            <label>Status</label>
+                            <select class="form-control">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="on_leave">On Leave</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="saveStaff()">Save Staff</button>
+                <button class="btn btn-secondary" onclick="closeAddStaffModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/admin.js"></script>
+    <script>
+        // Check authentication and load user data
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.role !== 'admin') {
+                window.location.href = '../../auth/login.html';
+                return;
+            }
+
+            // Update user info
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userAvatar').textContent = getInitials(currentUser.name);
+
+            // Load staff data
+            loadStaffData();
+        });
+
+        function getInitials(name) {
+            return name.split(' ').map(n => n[0]).join('').toUpperCase();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            
+            sidebar.classList.toggle('active');
+            if (sidebar.classList.contains('active')) {
+                mainContent.style.marginLeft = '260px';
+            } else {
+                mainContent.style.marginLeft = '0';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = '../../auth/login.html';
+        }
+
+        function loadStaffData() {
+            console.log('Loading staff data...');
+            // In real implementation, this would fetch staff data from API
+        }
+
+        function showAddStaffModal() {
+            document.getElementById('addStaffModal').style.display = 'block';
+        }
+
+        function closeAddStaffModal() {
+            document.getElementById('addStaffModal').style.display = 'none';
+        }
+
+        function saveStaff() {
+            const form = document.getElementById('addStaffForm');
+            if (!form.checkValidity()) {
+                alert('Please fill all required fields.');
+                return;
+            }
+
+            // Save staff data
+            alert('Staff member added successfully!');
+            closeAddStaffModal();
+            form.reset();
+        }
+
+        function editStaff(staffId) {
+            alert('Editing staff: ' + staffId);
+            // Implementation for editing staff
+        }
+
+        function viewStaff(staffId) {
+            alert('Viewing staff details: ' + staffId);
+            // Implementation for viewing staff details
+        }
+
+        function deleteStaff(staffId) {
+            if (confirm('Are you sure you want to delete this staff member?')) {
+                alert('Staff member deleted: ' + staffId);
+                // Implementation for deleting staff
+            }
+        }
+
+        function filterStaffByDepartment(dept) {
+            console.log('Filtering by department:', dept);
+            // Implementation for filtering
+        }
+
+        function filterStaffByStatus(status) {
+            console.log('Filtering by status:', status);
+            // Implementation for filtering
+        }
+
+        function searchStaff(query) {
+            console.log('Searching staff:', query);
+            // Implementation for searching
+        }
+
+        function exportStaffData() {
+            alert('Exporting staff data to Excel...');
+            // Implementation for data export
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('addStaffModal');
+            if (event.target === modal) {
+                closeAddStaffModal();
+            }
+        }
+    </script>
+
+    <style>
+        .staff-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .staff-avatar-sm {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #1a73e8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .page-numbers {
+            display: flex;
+            gap: 5px;
+        }
+
+        .page-btn {
+            padding: 5px 10px;
+            border: 1px solid #e1e5e9;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+
+        .page-btn:hover:not(.active) {
+            background: #f8f9fa;
+        }
+
+        .stat-card.mini {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-card.mini .stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-card.mini .stat-value {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card.mini .stat-label {
+            font-size: 0.8rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e1e5e9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #e1e5e9;
+            text-align: right;
+        }
+
+        .close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+
+        .form-col {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 250px;
+            margin-bottom: 15px;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+            margin: 0 2px;
+        }
+
+        @media (max-width: 768px) {
+            .form-col {
+                flex: 0 0 100%;
+            }
+            
+            .staff-cell {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .pagination {
+                flex-wrap: wrap;
+            }
+            
+            .stat-card.mini {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</body>
+</html>

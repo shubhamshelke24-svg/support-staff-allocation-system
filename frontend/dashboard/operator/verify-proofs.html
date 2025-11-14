@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Proofs - Operator Dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Cleaning Department</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="allocate-duties.html" class="menu-item">
+                    <i class="fas fa-tasks"></i> Allocate Duties
+                </a>
+                <a href="monitor-tasks.html" class="menu-item">
+                    <i class="fas fa-eye"></i> Monitor Tasks
+                </a>
+                <a href="verify-proofs.html" class="menu-item active">
+                    <i class="fas fa-check-circle"></i> Verify Proofs
+                </a>
+                <a href="query-handling.html" class="menu-item">
+                    <i class="fas fa-comments"></i> Query Handling
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-check-circle"></i> Verify Task Proofs</h1>
+                    <small>Review and approve completed work</small>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">Department Operator</div>
+                        <div class="user-role">Cleaning Department</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">OP</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Pending Verifications -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-clock"></i> Pending Verifications</h3>
+                        <p>Proofs waiting for your approval</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="proofs-grid">
+                            <!-- Proof Card 1 -->
+                            <div class="proof-card">
+                                <div class="proof-header">
+                                    <div class="staff-info">
+                                        <div class="staff-avatar">JS</div>
+                                        <div>
+                                            <h4>John Smith</h4>
+                                            <p>Ward 101 Cleaning</p>
+                                        </div>
+                                    </div>
+                                    <span class="proof-time">Submitted: 10:25 AM</span>
+                                </div>
+                                <div class="proof-content">
+                                    <div class="proof-image">
+                                        <img src="https://via.placeholder.com/300x200/4CAF50/white?text=Clean+Room+101" alt="Task Proof">
+                                        <div class="image-overlay">
+                                            <button class="btn btn-light btn-sm" onclick="zoomImage(this)">
+                                                <i class="fas fa-search-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="proof-details">
+                                        <h5>Task Details</h5>
+                                        <p><strong>Location:</strong> 1st Floor, Room 101</p>
+                                        <p><strong>Time:</strong> 08:00 AM - 10:00 AM</p>
+                                        <p><strong>Description:</strong> Complete room cleaning and disinfection</p>
+                                        <div class="geo-info">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span>Geo-tagged: 1st Floor, Room 101</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="proof-actions">
+                                    <div class="rating-system">
+                                        <span>Rate Quality:</span>
+                                        <div class="stars">
+                                            <i class="fas fa-star" onclick="rateProof(this, 1)"></i>
+                                            <i class="fas fa-star" onclick="rateProof(this, 2)"></i>
+                                            <i class="fas fa-star" onclick="rateProof(this, 3)"></i>
+                                            <i class="fas fa-star" onclick="rateProof(this, 4)"></i>
+                                            <i class="fas fa-star" onclick="rateProof(this, 5)"></i>
+                                        </div>
+                                    </div>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-success" onclick="approveProof('proof1', 5)">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                        <button class="btn btn-danger" onclick="rejectProof('proof1')">
+                                            <i class="fas fa-times"></i> Reject
+                                        </button>
+                                        <button class="btn btn-warning" onclick="requestRevision('proof1')">
+                                            <i class="fas fa-redo"></i> Revision
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Proof Card 2 -->
+                            <div class="proof-card">
+                                <div class="proof-header">
+                                    <div class="staff-info">
+                                        <div class="staff-avatar">SJ</div>
+                                        <div>
+                                            <h4>Sarah Johnson</h4>
+                                            <p>ICU Sterilization</p>
+                                        </div>
+                                    </div>
+                                    <span class="proof-time">Submitted: 10:45 AM</span>
+                                </div>
+                                <div class="proof-content">
+                                    <div class="proof-image">
+                                        <img src="https://via.placeholder.com/300x200/2196F3/white?text=ICU+Cleaned" alt="Task Proof">
+                                        <div class="image-overlay">
+                                            <button class="btn btn-light btn-sm" onclick="zoomImage(this)">
+                                                <i class="fas fa-search-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="proof-details">
+                                        <h5>Task Details</h5>
+                                        <p><strong>Location:</strong> ICU Section, 3rd Floor</p>
+                                        <p><strong>Time:</strong> 09:00 AM - 11:00 AM</p>
+                                        <p><strong>Description:</strong> High-level sterilization and equipment cleaning</p>
+                                        <div class="geo-info">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span>Geo-tagged: ICU Section</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="proof-actions">
+                                    <div class="rating-system">
+                                        <span>Rate Quality:</span>
+                                        <div class="stars">
+                                            <i class="fas fa-star" onclick="rateProof(this, 1)"></i>
+                                            <i class="fas fa-star" onclick="rateProof(this, 2)"></i>
+                                            <i class="fas fa-star" onclick="rateProof(this, 3)"></i>
+                                            <i class="fas fa-star" onclick="rateProof(this, 4)"></i>
+                                            <i class="fas fa-star" onclick="rateProof(this, 5)"></i>
+                                        </div>
+                                    </div>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-success" onclick="approveProof('proof2', 5)">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                        <button class="btn btn-danger" onclick="rejectProof('proof2')">
+                                            <i class="fas fa-times"></i> Reject
+                                        </button>
+                                        <button class="btn btn-warning" onclick="requestRevision('proof2')">
+                                            <i class="fas fa-redo"></i> Revision
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recently Verified -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-history"></i> Recently Verified</h3>
+                        <p>Last 24 hours approved proofs</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Staff</th>
+                                        <th>Task</th>
+                                        <th>Location</th>
+                                        <th>Submitted</th>
+                                        <th>Verified</th>
+                                        <th>Rating</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="staff-cell">
+                                                <div class="staff-avatar-sm">MD</div>
+                                                Mike Davis
+                                            </div>
+                                        </td>
+                                        <td>Corridor Sanitization</td>
+                                        <td>Main Corridor</td>
+                                        <td>09:30 AM</td>
+                                        <td>09:45 AM</td>
+                                        <td>
+                                            <div class="rating-display">
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star-half-alt filled"></i>
+                                                <span>4.5</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="medical-badge badge-success">Approved</span></td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm" onclick="viewProofDetails('proof3')">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="staff-cell">
+                                                <div class="staff-avatar-sm">EW</div>
+                                                Emily Wilson
+                                            </div>
+                                        </td>
+                                        <td>Washroom Cleaning</td>
+                                        <td>2nd Floor</td>
+                                        <td>08:45 AM</td>
+                                        <td>09:00 AM</td>
+                                        <td>
+                                            <div class="rating-display">
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star"></i>
+                                                <span>4.0</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="medical-badge badge-success">Approved</span></td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content image-modal">
+            <span class="close" onclick="closeImageModal()">&times;</span>
+            <img id="modalImage" src="" alt="Enlarged Proof">
+            <div class="image-info">
+                <h4 id="modalTitle">Task Proof</h4>
+                <p id="modalDescription">Proof image details</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/operator.js"></script>
+    <script>
+        let currentRating = 0;
+
+        function zoomImage(button) {
+            const proofCard = button.closest('.proof-card');
+            const imgSrc = proofCard.querySelector('img').src;
+            const staffName = proofCard.querySelector('.staff-info h4').textContent;
+            const taskName = proofCard.querySelector('.staff-info p').textContent;
+            
+            document.getElementById('modalImage').src = imgSrc;
+            document.getElementById('modalTitle').textContent = `${staffName} - ${taskName}`;
+            document.getElementById('modalDescription').textContent = 'Submitted proof for verification';
+            
+            document.getElementById('imageModal').style.display = 'block';
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        function rateProof(star, rating) {
+            const stars = star.parentElement.querySelectorAll('.fa-star');
+            stars.forEach((s, index) => {
+                if (index < rating) {
+                    s.classList.add('filled');
+                } else {
+                    s.classList.remove('filled');
+                }
+            });
+            currentRating = rating;
+        }
+
+        function approveProof(proofId, rating) {
+            if (rating === 0) {
+                alert('Please rate the proof quality before approval.');
+                return;
+            }
+            
+            if (confirm(`Approve this proof with ${rating} star rating?`)) {
+                // API call to approve proof
+                alert('Proof approved successfully! Staff performance updated.');
+                // Remove proof from pending list
+                document.querySelector(`[onclick*="${proofId}"]`).closest('.proof-card').remove();
+            }
+        }
+
+        function rejectProof(proofId) {
+            const reason = prompt('Please provide reason for rejection:');
+            if (reason) {
+                // API call to reject proof
+                alert('Proof rejected. Staff has been notified.');
+                document.querySelector(`[onclick*="${proofId}"]`).closest('.proof-card').remove();
+            }
+        }
+
+        function requestRevision(proofId) {
+            const feedback = prompt('What needs to be improved?');
+            if (feedback) {
+                // API call to request revision
+                alert('Revision requested. Staff will re-submit the proof.');
+                document.querySelector(`[onclick*="${proofId}"]`).closest('.proof-card').remove();
+            }
+        }
+
+        function viewProofDetails(proofId) {
+            alert('Viewing proof details: ' + proofId);
+            // Implementation for detailed proof view
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeImageModal();
+            }
+        }
+    </script>
+
+    <style>
+        .proofs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .proof-card {
+            border: 1px solid #e1e5e9;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .proof-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .staff-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .staff-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a73e8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .staff-avatar-sm {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #1a73e8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        .staff-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        .proof-time {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .proof-content {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .proof-image {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .proof-image img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e1e5e9;
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+
+        .proof-details {
+            flex: 1;
+        }
+
+        .proof-details h5 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .proof-details p {
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .geo-info {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #e8f0fe;
+            border-radius: 6px;
+            color: #1a73e8;
+            font-size: 0.9rem;
+        }
+
+        .geo-info i {
+            margin-right: 8px;
+        }
+
+        .proof-actions {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e1e5e9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .rating-system {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .stars .fa-star {
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .stars .fa-star.filled {
+            color: #f9ab00;
+        }
+
+        .stars .fa-star:hover {
+            color: #f9ab00;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .rating-display {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .rating-display .fa-star {
+            color: #ddd;
+        }
+
+        .rating-display .fa-star.filled {
+            color: #f9ab00;
+        }
+
+        .image-modal {
+            max-width: 90%;
+            max-height: 90%;
+            text-align: center;
+        }
+
+        .image-modal img {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+        }
+
+        .image-info {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .proofs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .proof-content {
+                flex-direction: column;
+            }
+            
+            .proof-image img {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .proof-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .rating-system {
+                justify-content: center;
+            }
+            
+            .action-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</body>
+</html>

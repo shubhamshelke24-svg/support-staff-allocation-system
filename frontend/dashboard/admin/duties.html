@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duties & Allocation - Admin Dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Staff Allocation System</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-chart-pie"></i> Overview
+                </a>
+                <a href="staff-management.html" class="menu-item">
+                    <i class="fas fa-users"></i> Staff Management
+                </a>
+                <a href="duties.html" class="menu-item active">
+                    <i class="fas fa-tasks"></i> Duties & Allocation
+                </a>
+                <a href="attendance.html" class="menu-item">
+                    <i class="fas fa-calendar-check"></i> Attendance
+                </a>
+                <a href="performance.html" class="menu-item">
+                    <i class="fas fa-chart-line"></i> Performance
+                </a>
+                <a href="reports.html" class="menu-item">
+                    <i class="fas fa-file-alt"></i> Reports
+                </a>
+                <a href="settings.html" class="menu-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-tasks"></i> Duties & Allocation</h1>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">System Administrator</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">SA</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Department Filter -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Select Department</label>
+                                <select class="form-control" id="deptFilter">
+                                    <option value="">All Departments</option>
+                                    <option value="cleaning">Cleaning Staff</option>
+                                    <option value="nursing">Nursing Staff</option>
+                                    <option value="laboratory">Laboratory Staff</option>
+                                    <option value="admin">Administrative</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <label>Date Range</label>
+                                <input type="date" class="form-control" id="dateFilter">
+                            </div>
+                            <div class="col-4">
+                                <label>Status</label>
+                                <select class="form-control" id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="scheduled">Scheduled</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="delayed">Delayed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Duties Table -->
+                <div class="card">
+                    <div class="card-header d-flex justify-between align-center">
+                        <h3>All Duty Allocations</h3>
+                        <button class="btn btn-primary" onclick="showAssignDutyModal()">
+                            <i class="fas fa-plus"></i> Assign New Duty
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Duty ID</th>
+                                        <th>Staff Member</th>
+                                        <th>Department</th>
+                                        <th>Task</th>
+                                        <th>Location</th>
+                                        <th>Schedule</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>DT001</td>
+                                        <td>John Smith</td>
+                                        <td>Cleaning</td>
+                                        <td>Ward 101 Cleaning & Disinfection</td>
+                                        <td>1st Floor, Room 101</td>
+                                        <td>08:00 - 10:00</td>
+                                        <td><span class="medical-badge badge-success">Completed</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-sm" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>DT002</td>
+                                        <td>Sarah Johnson</td>
+                                        <td>Nursing</td>
+                                        <td>Patient Room Sterilization</td>
+                                        <td>ICU, Room 205</td>
+                                        <td>09:00 - 11:00</td>
+                                        <td><span class="medical-badge badge-warning">In Progress</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>DT003</td>
+                                        <td>Mike Davis</td>
+                                        <td>Laboratory</td>
+                                        <td>Equipment Cleaning</td>
+                                        <td>Lab Room 3</td>
+                                        <td>10:00 - 12:00</td>
+                                        <td><span class="medical-badge badge-info">Scheduled</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>DT004</td>
+                                        <td>Emily Wilson</td>
+                                        <td>Cleaning</td>
+                                        <td>Washroom Sanitization</td>
+                                        <td>2nd Floor Washroom</td>
+                                        <td>11:00 - 12:00</td>
+                                        <td><span class="medical-badge badge-danger">Delayed</span></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Requests -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-clock"></i> Pending Extension Requests</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Request ID</th>
+                                        <th>Staff</th>
+                                        <th>Duty</th>
+                                        <th>Requested Extension</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>REQ001</td>
+                                        <td>John Smith</td>
+                                        <td>Ward 101 Cleaning</td>
+                                        <td>15 minutes</td>
+                                        <td>Additional sanitization required</td>
+                                        <td><span class="medical-badge badge-warning">Pending</span></td>
+                                        <td>
+                                            <button class="btn btn-success btn-sm" onclick="approveRequest('REQ001')">
+                                                <i class="fas fa-check"></i> Approve
+                                            </button>
+                                            <button class="btn btn-danger btn-sm" onclick="rejectRequest('REQ001')">
+                                                <i class="fas fa-times"></i> Reject
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Duty Modal -->
+    <div id="assignDutyModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Assign New Duty</h3>
+                <span class="close" onclick="closeAssignDutyModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="assignDutyForm">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Staff Member</label>
+                            <select class="form-control" required>
+                                <option value="">Select Staff</option>
+                                <option value="1">John Smith (Cleaning)</option>
+                                <option value="2">Sarah Johnson (Nursing)</option>
+                            </select>
+                        </div>
+                        <div class="form-col">
+                            <label>Task Description</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Location</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-col">
+                            <label>Department</label>
+                            <select class="form-control" required>
+                                <option value="cleaning">Cleaning</option>
+                                <option value="nursing">Nursing</option>
+                                <option value="laboratory">Laboratory</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Start Time</label>
+                            <input type="datetime-local" class="form-control" required>
+                        </div>
+                        <div class="form-col">
+                            <label>End Time</label>
+                            <input type="datetime-local" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Priority</label>
+                            <select class="form-control">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="assignDuty()">Assign Duty</button>
+                <button class="btn btn-secondary" onclick="closeAssignDutyModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/admin.js"></script>
+    <script>
+        function showAssignDutyModal() {
+            document.getElementById('assignDutyModal').style.display = 'block';
+        }
+
+        function closeAssignDutyModal() {
+            document.getElementById('assignDutyModal').style.display = 'none';
+        }
+
+        function assignDuty() {
+            // Implementation for assigning duty
+            alert('Duty assigned successfully!');
+            closeAssignDutyModal();
+        }
+
+        function approveRequest(requestId) {
+            if (confirm('Approve this extension request?')) {
+                alert('Request ' + requestId + ' approved!');
+            }
+        }
+
+        function rejectRequest(requestId) {
+            if (confirm('Reject this extension request?')) {
+                alert('Request ' + requestId + ' rejected!');
+            }
+        }
+    </script>
+
+    <style>
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e1e5e9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #e1e5e9;
+            text-align: right;
+        }
+
+        .close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+            margin: 0 2px;
+        }
+    </style>
+</body>
+</html>

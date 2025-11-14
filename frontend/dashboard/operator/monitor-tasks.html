@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Tasks - Operator Dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Cleaning Department</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="allocate-duties.html" class="menu-item">
+                    <i class="fas fa-tasks"></i> Allocate Duties
+                </a>
+                <a href="monitor-tasks.html" class="menu-item active">
+                    <i class="fas fa-eye"></i> Monitor Tasks
+                </a>
+                <a href="verify-proofs.html" class="menu-item">
+                    <i class="fas fa-check-circle"></i> Verify Proofs
+                </a>
+                <a href="query-handling.html" class="menu-item">
+                    <i class="fas fa-comments"></i> Query Handling
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-eye"></i> Monitor Tasks</h1>
+                    <small>Real-time task tracking</small>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">Department Operator</div>
+                        <div class="user-role">Cleaning Department</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">OP</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Task Overview Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-value">28</div>
+                        <div class="stat-label">Total Tasks Today</div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-spinner"></i>
+                        </div>
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Delayed</div>
+                    </div>
+                </div>
+
+                <!-- Live Activity Feed -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-broadcast-tower"></i> Live Activity Feed</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-feed">
+                            <div class="activity-item new">
+                                <div class="activity-icon">
+                                    <i class="fas fa-play-circle"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>Mike Davis started Ward 205 cleaning</h4>
+                                    <p>2 minutes ago • Checked in via QR code</p>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>Sarah Johnson uploaded proof for ICU sterilization</h4>
+                                    <p>5 minutes ago • Waiting for verification</p>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>John Smith completed corridor sanitization</h4>
+                                    <p>8 minutes ago • Approved by operator</p>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>Emily Wilson requested time extension</h4>
+                                    <p>15 minutes ago • Needs 15 more minutes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Monitoring Table -->
+                <div class="card">
+                    <div class="card-header d-flex justify-between align-center">
+                        <h3><i class="fas fa-list"></i> Active Tasks Monitoring</h3>
+                        <div class="filter-controls">
+                            <select class="form-control" onchange="filterTasks(this.value)">
+                                <option value="all">All Tasks</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="delayed">Delayed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Task ID</th>
+                                        <th>Staff Member</th>
+                                        <th>Task Description</th>
+                                        <th>Location</th>
+                                        <th>Start Time</th>
+                                        <th>Current Status</th>
+                                        <th>Progress</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>TASK-001</td>
+                                        <td>John Smith</td>
+                                        <td>Ward 101 Cleaning & Disinfection</td>
+                                        <td>1st Floor, Room 101</td>
+                                        <td>08:00 AM</td>
+                                        <td><span class="medical-badge badge-success">Completed</span></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 100%"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm" onclick="viewTaskDetails('TASK-001')">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>TASK-002</td>
+                                        <td>Sarah Johnson</td>
+                                        <td>ICU Area Sterilization</td>
+                                        <td>ICU Section, 3rd Floor</td>
+                                        <td>09:00 AM</td>
+                                        <td><span class="medical-badge badge-warning">In Progress</span></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 75%"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-warning btn-sm">
+                                                <i class="fas fa-comment"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>TASK-003</td>
+                                        <td>Mike Davis</td>
+                                        <td>Corridor Sanitization</td>
+                                        <td>Main Corridor, 2nd Floor</td>
+                                        <td>10:30 AM</td>
+                                        <td><span class="medical-badge badge-info">Scheduled</span></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 0%"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>TASK-004</td>
+                                        <td>Emily Wilson</td>
+                                        <td>Washroom Deep Cleaning</td>
+                                        <td>2nd Floor Washrooms</td>
+                                        <td>11:30 AM</td>
+                                        <td><span class="medical-badge badge-danger">Delayed</span></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 40%"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-success btn-sm">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Status Overview -->
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-pie"></i> Task Status Distribution</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="taskStatusChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-bar"></i> Performance by Staff</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="staffPerformanceChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../assets/js/operator.js"></script>
+    <script>
+        // Task Status Chart
+        const statusCtx = document.getElementById('taskStatusChart').getContext('2d');
+        const statusChart = new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed', 'In Progress', 'Scheduled', 'Delayed'],
+                datasets: [{
+                    data: [18, 6, 4, 4],
+                    backgroundColor: [
+                        '#34a853',
+                        '#f9ab00',
+                        '#1a73e8',
+                        '#ea4335'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Staff Performance Chart
+        const staffCtx = document.getElementById('staffPerformanceChart').getContext('2d');
+        const staffChart = new Chart(staffCtx, {
+            type: 'bar',
+            data: {
+                labels: ['John Smith', 'Sarah Johnson', 'Mike Davis', 'Emily Wilson', 'Robert Brown'],
+                datasets: [{
+                    label: 'Tasks Completed Today',
+                    data: [5, 4, 3, 2, 4],
+                    backgroundColor: '#1a73e8',
+                    borderColor: '#0d47a1',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Tasks'
+                        }
+                    }
+                }
+            }
+        });
+
+        function filterTasks(status) {
+            alert('Filtering tasks by: ' + status);
+            // Implementation for task filtering
+        }
+
+        function viewTaskDetails(taskId) {
+            alert('Viewing details for task: ' + taskId);
+            // Implementation for task details view
+        }
+
+        // Simulate real-time updates
+        setInterval(() => {
+            // This would typically fetch new data from the server
+            console.log('Checking for task updates...');
+        }, 30000); // Check every 30 seconds
+    </script>
+
+    <style>
+        .activity-feed {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #1a73e8;
+        }
+
+        .activity-item.new {
+            background: #e8f0fe;
+            border-left-color: #34a853;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a73e8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .activity-item.new .activity-icon {
+            background: #34a853;
+        }
+
+        .activity-content h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .activity-content p {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .progress-bar {
+            width: 100px;
+            height: 8px;
+            background: #e1e5e9;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #34a853;
+            transition: width 0.3s ease;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+    </style>
+</body>
+</html>

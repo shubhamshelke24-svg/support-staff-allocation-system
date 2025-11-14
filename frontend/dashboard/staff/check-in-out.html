@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check In/Out - Staff Dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Cleaning Staff</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="view-duty.html" class="menu-item">
+                    <i class="fas fa-list"></i> My Duties
+                </a>
+                <a href="check-in-out.html" class="menu-item active">
+                    <i class="fas fa-qrcode"></i> Check In/Out
+                </a>
+                <a href="upload-proof.html" class="menu-item">
+                    <i class="fas fa-camera"></i> Upload Proof
+                </a>
+                <a href="request-extension.html" class="menu-item">
+                    <i class="fas fa-clock"></i> Request Extension
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-qrcode"></i> Check In & Out</h1>
+                    <small>Scan QR codes to track your work</small>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">John Smith</div>
+                        <div class="user-role">Cleaning Staff</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">JS</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Current Status -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-user-clock"></i> Current Status</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="status-indicator">
+                            <div class="status-card active">
+                                <i class="fas fa-play-circle"></i>
+                                <div>
+                                    <h4>Currently Working On</h4>
+                                    <p>Washroom Deep Cleaning</p>
+                                    <span class="status-time">Started: 11:30 AM</span>
+                                </div>
+                            </div>
+                            <div class="status-info">
+                                <p><strong>Location:</strong> 2nd Floor Washrooms</p>
+                                <p><strong>Task Duration:</strong> 11:30 AM - 01:00 PM</p>
+                                <p><strong>Time Remaining:</strong> 45 minutes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Scanner Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-camera"></i> QR Code Scanner</h3>
+                        <p>Scan task QR codes to check in and out</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="scanner-section">
+                            <div class="scanner-container">
+                                <div class="scanner-placeholder" id="cameraPlaceholder">
+                                    <i class="fas fa-qrcode"></i>
+                                    <h4>QR Scanner</h4>
+                                    <p>Point your camera at the QR code</p>
+                                    <div class="scanner-frame">
+                                        <div class="scanner-corner tl"></div>
+                                        <div class="scanner-corner tr"></div>
+                                        <div class="scanner-corner bl"></div>
+                                        <div class="scanner-corner br"></div>
+                                    </div>
+                                </div>
+                                <div class="scanner-preview" id="scannerPreview" style="display: none;">
+                                    <video id="cameraVideo" autoplay playsinline></video>
+                                    <div class="scanner-overlay">
+                                        <div class="scanner-frame active">
+                                            <div class="scanner-corner tl"></div>
+                                            <div class="scanner-corner tr"></div>
+                                            <div class="scanner-corner bl"></div>
+                                            <div class="scanner-corner br"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="scanner-controls">
+                                <button class="btn btn-primary btn-lg" onclick="startScanner()" id="startCameraBtn">
+                                    <i class="fas fa-play"></i> Start Scanner
+                                </button>
+                                <button class="btn btn-secondary" onclick="stopScanner()" id="stopCameraBtn" style="display: none;">
+                                    <i class="fas fa-stop"></i> Stop Scanner
+                                </button>
+                                <button class="btn btn-outline" onclick="manualEntry()">
+                                    <i class="fas fa-keyboard"></i> Manual Entry
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row mb-4">
+                    <div class="col-4">
+                        <div class="card text-center quick-action-card" onclick="quickCheckIn('TASK-003')">
+                            <div class="card-body">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <h4>Quick Check In</h4>
+                                <p>Washroom Deep Cleaning</p>
+                                <span class="action-badge available">Available</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card text-center quick-action-card" onclick="quickCheckOut('TASK-003')">
+                            <div class="card-body">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <h4>Quick Check Out</h4>
+                                <p>Current Task</p>
+                                <span class="action-badge active">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card text-center quick-action-card" onclick="location.href='view-duty.html'">
+                            <div class="card-body">
+                                <i class="fas fa-list"></i>
+                                <h4>View Schedule</h4>
+                                <p>All tasks for today</p>
+                                <span class="action-badge info">5 Tasks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's Check-ins -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-history"></i> Today's Activity Log</h3>
+                        <p>Your check-in/out history for today</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-log">
+                            <!-- Activity Item -->
+                            <div class="log-item check-in">
+                                <div class="log-icon">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </div>
+                                <div class="log-content">
+                                    <h4>Checked In - Ward 101 Cleaning</h4>
+                                    <p>1st Floor, Room 101 • 07:55 AM</p>
+                                    <span class="log-status on-time">5 minutes early</span>
+                                </div>
+                                <div class="log-qr">
+                                    <span class="qr-badge">QR: W101-CLEAN</span>
+                                </div>
+                            </div>
+
+                            <!-- Activity Item -->
+                            <div class="log-item check-out">
+                                <div class="log-icon">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </div>
+                                <div class="log-content">
+                                    <h4>Checked Out - Ward 101 Cleaning</h4>
+                                    <p>1st Floor, Room 101 • 10:05 AM</p>
+                                    <span class="log-status on-time">5 minutes overtime</span>
+                                </div>
+                                <div class="log-qr">
+                                    <span class="qr-badge">QR: W101-CLEAN</span>
+                                </div>
+                            </div>
+
+                            <!-- Activity Item -->
+                            <div class="log-item check-in">
+                                <div class="log-icon">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </div>
+                                <div class="log-content">
+                                    <h4>Checked In - Corridor Sanitization</h4>
+                                    <p>Main Corridor, 1st Floor • 10:12 AM</p>
+                                    <span class="log-status on-time">3 minutes early</span>
+                                </div>
+                                <div class="log-qr">
+                                    <span class="qr-badge">QR: CORRIDOR-1F</span>
+                                </div>
+                            </div>
+
+                            <!-- Activity Item -->
+                            <div class="log-item check-out">
+                                <div class="log-icon">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </div>
+                                <div class="log-content">
+                                    <h4>Checked Out - Corridor Sanitization</h4>
+                                    <p>Main Corridor, 1st Floor • 11:10 AM</p>
+                                    <span class="log-status early">5 minutes early</span>
+                                </div>
+                                <div class="log-qr">
+                                    <span class="qr-badge">QR: CORRIDOR-1F</span>
+                                </div>
+                            </div>
+
+                            <!-- Activity Item -->
+                            <div class="log-item check-in">
+                                <div class="log-icon">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </div>
+                                <div class="log-content">
+                                    <h4>Checked In - Washroom Deep Cleaning</h4>
+                                    <p>2nd Floor Washrooms • 11:28 AM</p>
+                                    <span class="log-status on-time">2 minutes early</span>
+                                </div>
+                                <div class="log-qr">
+                                    <span class="qr-badge">QR: WASHROOM-2F</span>
+                                </div>
+                            </div>
+
+                            <!-- Current Activity -->
+                            <div class="log-item current">
+                                <div class="log-icon">
+                                    <i class="fas fa-spinner"></i>
+                                </div>
+                                <div class="log-content">
+                                    <h4>Currently Working - Washroom Deep Cleaning</h4>
+                                    <p>2nd Floor Washrooms • Started: 11:30 AM</p>
+                                    <span class="log-status in-progress">In Progress - 45m remaining</span>
+                                </div>
+                                <div class="log-actions">
+                                    <button class="btn btn-primary btn-sm" onclick="quickCheckOut('TASK-003')">
+                                        <i class="fas fa-sign-out-alt"></i> Check Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Tasks -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-calendar-check"></i> Upcoming Tasks</h3>
+                        <p>Tasks available for check-in soon</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="upcoming-tasks">
+                            <div class="task-card">
+                                <div class="task-info">
+                                    <h4>ICU Area Sterilization</h4>
+                                    <p><i class="fas fa-map-marker-alt"></i> ICU Section, 3rd Floor</p>
+                                    <p><i class="fas fa-clock"></i> 02:00 PM - 03:30 PM</p>
+                                    <p><i class="fas fa-qrcode"></i> QR Code: ICU-STERILIZE</p>
+                                </div>
+                                <div class="task-actions">
+                                    <span class="time-until">Check-in available at 01:45 PM</span>
+                                    <button class="btn btn-outline btn-sm" disabled>
+                                        <i class="fas fa-qrcode"></i> Check In
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="task-card">
+                                <div class="task-info">
+                                    <h4>Equipment Cleaning</h4>
+                                    <p><i class="fas fa-map-marker-alt"></i> Storage Room, Basement</p>
+                                    <p><i class="fas fa-clock"></i> 04:00 PM - 05:00 PM</p>
+                                    <p><i class="fas fa-qrcode"></i> QR Code: EQUIP-CLEAN</p>
+                                </div>
+                                <div class="task-actions">
+                                    <span class="time-until">Check-in available at 03:45 PM</span>
+                                    <button class="btn btn-outline btn-sm" disabled>
+                                        <i class="fas fa-qrcode"></i> Check In
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manual Entry Modal -->
+    <div id="manualModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Manual QR Code Entry</h3>
+                <span class="close" onclick="closeManualModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Enter QR Code</label>
+                    <input type="text" class="form-control" placeholder="Enter QR code from task location" id="qrCodeInput">
+                    <small class="form-text">Find the QR code at your task location</small>
+                </div>
+                <div class="form-group">
+                    <label>Select Task</label>
+                    <select class="form-control" id="taskSelect">
+                        <option value="">Select your current task</option>
+                        <option value="TASK-003">Washroom Deep Cleaning (Current)</option>
+                        <option value="TASK-004">ICU Area Sterilization (Upcoming)</option>
+                        <option value="TASK-005">Equipment Cleaning (Upcoming)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Action Type</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="actionType" value="checkin" checked>
+                            <span>Check In</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="actionType" value="checkout">
+                            <span>Check Out</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="processManualEntry()">
+                    <i class="fas fa-check"></i> Submit
+                </button>
+                <button class="btn btn-secondary" onclick="closeManualModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scan Result Modal -->
+    <div id="scanResultModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="scanResultTitle">Scan Result</h3>
+                <span class="close" onclick="closeScanResultModal()">&times;</span>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle text-success" id="scanResultIcon" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                <h4 id="scanResultMessage">QR Code Scanned Successfully</h4>
+                <p id="scanResultDetails" class="text-muted">Processing your request...</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeScanResultModal()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/staff.js"></script>
+    <script>
+        let scannerActive = false;
+        let currentStream = null;
+
+        function startScanner() {
+            // In a real implementation, this would access the device camera
+            console.log('Starting QR scanner...');
+            
+            // Show scanner preview
+            document.getElementById('cameraPlaceholder').style.display = 'none';
+            document.getElementById('scannerPreview').style.display = 'block';
+            document.getElementById('startCameraBtn').style.display = 'none';
+            document.getElementById('stopCameraBtn').style.display = 'inline-block';
+            
+            scannerActive = true;
+            
+            // Simulate QR code detection after 3 seconds
+            setTimeout(() => {
+                if (scannerActive) {
+                    simulateQRDetection();
+                }
+            }, 3000);
+        }
+
+        function stopScanner() {
+            console.log('Stopping QR scanner...');
+            
+            // Hide scanner preview
+            document.getElementById('scannerPreview').style.display = 'none';
+            document.getElementById('cameraPlaceholder').style.display = 'block';
+            document.getElementById('startCameraBtn').style.display = 'inline-block';
+            document.getElementById('stopCameraBtn').style.display = 'none';
+            
+            scannerActive = false;
+            
+            // Stop camera stream in real implementation
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+            }
+        }
+
+        function simulateQRDetection() {
+            if (!scannerActive) return;
+            
+            const qrCodes = [
+                { code: 'WASHROOM-2F', task: 'Washroom Deep Cleaning', type: 'checkout' },
+                { code: 'ICU-STERILIZE', task: 'ICU Area Sterilization', type: 'checkin' },
+                { code: 'EQUIP-CLEAN', task: 'Equipment Cleaning', type: 'checkin' }
+            ];
+            
+            // Randomly select a QR code for simulation
+            const randomQR = qrCodes[Math.floor(Math.random() * qrCodes.length)];
+            
+            showScanResult('success', `${randomQR.task}`, `QR Code: ${randomQR.code}<br>Action: ${randomQR.type.toUpperCase()}`);
+            
+            // Stop scanner after successful scan
+            setTimeout(() => {
+                stopScanner();
+            }, 2000);
+        }
+
+        function manualEntry() {
+            document.getElementById('manualModal').style.display = 'block';
+        }
+
+        function closeManualModal() {
+            document.getElementById('manualModal').style.display = 'none';
+            // Reset form
+            document.getElementById('qrCodeInput').value = '';
+            document.getElementById('taskSelect').value = '';
+        }
+
+        function processManualEntry() {
+            const qrCode = document.getElementById('qrCodeInput').value;
+            const task = document.getElementById('taskSelect').value;
+            const actionType = document.querySelector('input[name="actionType"]:checked').value;
+            
+            if (!qrCode) {
+                alert('Please enter a QR code.');
+                return;
+            }
+            
+            if (!task) {
+                alert('Please select a task.');
+                return;
+            }
+            
+            // Process manual entry
+            const taskName = document.getElementById('taskSelect').options[document.getElementById('taskSelect').selectedIndex].text;
+            showScanResult('success', `${taskName}`, `QR Code: ${qrCode}<br>Action: ${actionType.toUpperCase()}<br>Manual Entry`);
+            
+            closeManualModal();
+        }
+
+        function quickCheckIn(taskId) {
+            const taskName = getTaskName(taskId);
+            showScanResult('success', `Checked In to ${taskName}`, 'Quick action completed successfully');
+            
+            // Update UI to reflect check-in
+            updateActivityLog();
+        }
+
+        function quickCheckOut(taskId) {
+            const taskName = getTaskName(taskId);
+            if (confirm(`Check out from ${taskName}? You will need to upload proof of completion.`)) {
+                showScanResult('success', `Checked Out from ${taskName}`, 'Redirecting to proof upload...');
+                
+                // Redirect to proof upload after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'upload-proof.html';
+                }, 2000);
+            }
+        }
+
+        function getTaskName(taskId) {
+            const tasks = {
+                'TASK-003': 'Washroom Deep Cleaning',
+                'TASK-004': 'ICU Area Sterilization',
+                'TASK-005': 'Equipment Cleaning'
+            };
+            return tasks[taskId] || 'Unknown Task';
+        }
+
+        function showScanResult(type, title, message) {
+            const modal = document.getElementById('scanResultModal');
+            const icon = document.getElementById('scanResultIcon');
+            const titleEl = document.getElementById('scanResultTitle');
+            const messageEl = document.getElementById('scanResultMessage');
+            const detailsEl = document.getElementById('scanResultDetails');
+            
+            // Set content based on type
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle text-success';
+                titleEl.textContent = 'Success!';
+                messageEl.textContent = title;
+                detailsEl.innerHTML = message;
+            } else {
+                icon.className = 'fas fa-exclamation-circle text-danger';
+                titleEl.textContent = 'Error';
+                messageEl.textContent = 'Failed to process QR code';
+                detailsEl.textContent = 'Please try again or use manual entry.';
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function closeScanResultModal() {
+            document.getElementById('scanResultModal').style.display = 'none';
+        }
+
+        function updateActivityLog() {
+            // This would update the activity log in real implementation
+            console.log('Updating activity log...');
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const manualModal = document.getElementById('manualModal');
+            const scanModal = document.getElementById('scanResultModal');
+            
+            if (event.target === manualModal) {
+                closeManualModal();
+            }
+            if (event.target === scanModal) {
+                closeScanResultModal();
+            }
+        }
+
+        // Handle page visibility change (stop scanner when page is hidden)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && scannerActive) {
+                stopScanner();
+            }
+        });
+    </script>
+
+    <style>
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .status-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: #e8f0fe;
+            border-radius: 10px;
+            border-left: 4px solid #1a73e8;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .status-card i {
+            font-size: 2.5rem;
+            color: #1a73e8;
+        }
+
+        .status-card h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .status-card p {
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .status-time {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .status-info {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .status-info p {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .scanner-section {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .scanner-container {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .scanner-placeholder, .scanner-preview {
+            width: 100%;
+            height: 300px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            border: 2px dashed #e1e5e9;
+        }
+
+        .scanner-preview {
+            border: 2px solid #1a73e8;
+        }
+
+        .scanner-placeholder i {
+            font-size: 4rem;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .scanner-placeholder h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .scanner-placeholder p {
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .scanner-frame {
+            width: 200px;
+            height: 200px;
+            border: 2px solid #1a73e8;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .scanner-frame.active {
+            border-color: #34a853;
+            animation: pulse 2s infinite;
+        }
+
+        .scanner-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #1a73e8;
+        }
+
+        .scanner-frame.active .scanner-corner {
+            border-color: #34a853;
+        }
+
+        .scanner-corner.tl {
+            top: -3px;
+            left: -3px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .scanner-corner.tr {
+            top: -3px;
+            right: -3px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .scanner-corner.bl {
+            bottom: -3px;
+            left: -3px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .scanner-corner.br {
+            bottom: -3px;
+            right: -3px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .scanner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.1);
+        }
+
+        #cameraVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .scanner-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .quick-action-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-5px);
+            border-color: #1a73e8;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .quick-action-card i {
+            font-size: 2.5rem;
+            color: #1a73e8;
+            margin-bottom: 15px;
+        }
+
+        .quick-action-card h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .quick-action-card p {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .action-badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .action-badge.available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .action-badge.active {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .action-badge.info {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .activity-log {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .log-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e1e5e9;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .log-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .log-item.check-in {
+            border-left: 4px solid #34a853;
+            background: #f8fff9;
+        }
+
+        .log-item.check-out {
+            border-left: 4px solid #1a73e8;
+            background: #f8f9fa;
+        }
+
+        .log-item.current {
+            border-left: 4px solid #f9ab00;
+            background: #fffbf0;
+            animation: pulse 2s infinite;
+        }
+
+        .log-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .log-item.check-in .log-icon {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .log-item.check-out .log-icon {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .log-item.current .log-icon {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .log-content {
+            flex: 1;
+        }
+
+        .log-content h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .log-content p {
+            margin-bottom: 5px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .log-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .log-status.on-time {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .log-status.early {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .log-status.in-progress {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .log-qr {
+            flex-shrink: 0;
+        }
+
+        .qr-badge {
+            background: #6c757d;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-family: monospace;
+        }
+
+        .log-actions {
+            flex-shrink: 0;
+        }
+
+        .upcoming-tasks {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            background: #f8f9fa;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .task-info h4 {
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .task-info p {
+            margin-bottom: 4px;
+            color: #6c757d;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .task-info i {
+            width: 16px;
+            margin-right: 8px;
+            color: #1a73e8;
+        }
+
+        .task-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .time-until {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .status-indicator {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .scanner-controls {
+                flex-direction: column;
+            }
+            
+            .scanner-controls .btn {
+                width: 100%;
+            }
+            
+            .quick-action-card {
+                margin-bottom: 15px;
+            }
+            
+            .task-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .task-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .log-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .log-actions {
+                width: 100%;
+            }
+            
+            .log-actions .btn {
+                width: 100%;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</body>
+</html>

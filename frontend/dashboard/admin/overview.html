@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview - Admin Dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Staff Allocation System</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="overview.html" class="menu-item active">
+                    <i class="fas fa-chart-pie"></i> Overview
+                </a>
+                <a href="staff-management.html" class="menu-item">
+                    <i class="fas fa-users"></i> Staff Management
+                </a>
+                <a href="duties.html" class="menu-item">
+                    <i class="fas fa-tasks"></i> Duties & Allocation
+                </a>
+                <a href="attendance.html" class="menu-item">
+                    <i class="fas fa-calendar-check"></i> Attendance
+                </a>
+                <a href="performance.html" class="menu-item">
+                    <i class="fas fa-chart-line"></i> Performance
+                </a>
+                <a href="reports.html" class="menu-item">
+                    <i class="fas fa-file-alt"></i> Reports
+                </a>
+                <a href="settings.html" class="menu-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-chart-pie"></i> Dashboard Overview</h1>
+                    <small>Hospital Staff Management Analytics</small>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">System Administrator</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">SA</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Key Metrics -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value">147</div>
+                        <div class="stat-label">Total Staff</div>
+                        <div class="stat-trend up">+5% this month</div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-value">138</div>
+                        <div class="stat-label">Active Today</div>
+                        <div class="stat-trend up">+3% from yesterday</div>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-value">89%</div>
+                        <div class="stat-label">Task Completion</div>
+                        <div class="stat-trend up">+2% this week</div>
+                    </div>
+                    
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Pending Requests</div>
+                        <div class="stat-trend down">-4 from yesterday</div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="row mb-4">
+                    <div class="col-8">
+                        <!-- Department Performance -->
+                        <div class="chart-container">
+                            <div class="chart-header d-flex justify-between align-center">
+                                <div>
+                                    <h3>Department Performance Overview</h3>
+                                    <p>Task completion rates by department</p>
+                                </div>
+                                <select class="form-control" style="width: auto;" onchange="updateDepartmentChart(this.value)">
+                                    <option value="weekly">This Week</option>
+                                    <option value="monthly">This Month</option>
+                                    <option value="quarterly">This Quarter</option>
+                                </select>
+                            </div>
+                            <canvas id="departmentPerformanceChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="col-4">
+                        <!-- Department Distribution -->
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Staff Distribution</h3>
+                                <p>By department</p>
+                            </div>
+                            <canvas id="departmentDistributionChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Charts Row -->
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <!-- Attendance Trend -->
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Monthly Attendance Trend</h3>
+                                <p>Average daily attendance</p>
+                            </div>
+                            <canvas id="attendanceTrendChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="col-6">
+                        <!-- Performance Metrics -->
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Performance Metrics</h3>
+                                <p>Key performance indicators</p>
+                            </div>
+                            <canvas id="performanceMetricsChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-time Activity & Alerts -->
+                <div class="row">
+                    <div class="col-8">
+                        <!-- Recent Activity -->
+                        <div class="card">
+                            <div class="card-header d-flex justify-between align-center">
+                                <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                                <button class="btn btn-sm btn-outline" onclick="refreshActivity()">
+                                    <i class="fas fa-sync"></i> Refresh
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="activity-feed">
+                                    <div class="activity-item new">
+                                        <div class="activity-icon success">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div class="activity-content">
+                                            <h4>John Smith completed Ward 101 cleaning</h4>
+                                            <p>2 minutes ago • Rating: 4.8/5 • Cleaning Department</p>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon warning">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div class="activity-content">
+                                            <h4>Sarah Johnson requested time extension</h4>
+                                            <p>5 minutes ago • 15 minutes • ICU Sterilization</p>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon primary">
+                                            <i class="fas fa-tasks"></i>
+                                        </div>
+                                        <div class="activity-content">
+                                            <h4>Mike Davis started corridor sanitization</h4>
+                                            <p>8 minutes ago • Main Corridor, 2nd Floor</p>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon danger">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </div>
+                                        <div class="activity-content">
+                                            <h4>Equipment issue reported in Laboratory</h4>
+                                            <p>15 minutes ago • Sterilization machine malfunction</p>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon info">
+                                            <i class="fas fa-user-plus"></i>
+                                        </div>
+                                        <div class="activity-content">
+                                            <h4>New staff member registered</h4>
+                                            <p>30 minutes ago • Robert Brown - Cleaning Staff</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-4">
+                        <!-- System Alerts -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-bell"></i> System Alerts</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="alerts-list">
+                                    <div class="alert-item high">
+                                        <div class="alert-icon">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                        </div>
+                                        <div class="alert-content">
+                                            <h4>Low Attendance Alert</h4>
+                                            <p>Laboratory department below 80%</p>
+                                            <span class="alert-time">Today, 10:00 AM</span>
+                                        </div>
+                                    </div>
+                                    <div class="alert-item medium">
+                                        <div class="alert-icon">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div class="alert-content">
+                                            <h4>Pending Approvals</h4>
+                                            <p>3 proof verifications pending</p>
+                                            <span class="alert-time">Today, 09:45 AM</span>
+                                        </div>
+                                    </div>
+                                    <div class="alert-item low">
+                                        <div class="alert-icon">
+                                            <i class="fas fa-info-circle"></i>
+                                        </div>
+                                        <div class="alert-content">
+                                            <h4>System Backup</h4>
+                                            <p>Weekly backup completed</p>
+                                            <span class="alert-time">Yesterday, 23:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Stats -->
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h3><i class="fas fa-tachometer-alt"></i> Quick Stats</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="quick-stats">
+                                    <div class="quick-stat">
+                                        <i class="fas fa-calendar-day"></i>
+                                        <div>
+                                            <h4>Today's Tasks</h4>
+                                            <p>285 assigned</p>
+                                        </div>
+                                    </div>
+                                    <div class="quick-stat">
+                                        <i class="fas fa-check-circle"></i>
+                                        <div>
+                                            <h4>Completed</h4>
+                                            <p>254 tasks (89%)</p>
+                                        </div>
+                                    </div>
+                                    <div class="quick-stat">
+                                        <i class="fas fa-star"></i>
+                                        <div>
+                                            <h4>Avg. Rating</h4>
+                                            <p>4.3 out of 5</p>
+                                        </div>
+                                    </div>
+                                    <div class="quick-stat">
+                                        <i class="fas fa-clock"></i>
+                                        <div>
+                                            <h4>Avg. Time</h4>
+                                            <p>1.8 hours per task</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Department Performance Cards -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-building"></i> Department Performance Summary</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="department-cards">
+                                    <div class="dept-card cleaning">
+                                        <div class="dept-header">
+                                            <i class="fas fa-broom"></i>
+                                            <h4>Cleaning Department</h4>
+                                        </div>
+                                        <div class="dept-stats">
+                                            <div class="dept-stat">
+                                                <span class="label">Staff</span>
+                                                <span class="value">35</span>
+                                            </div>
+                                            <div class="dept-stat">
+                                                <span class="label">Completion</span>
+                                                <span class="value">92%</span>
+                                            </div>
+                                            <div class="dept-stat">
+                                                <span class="label">Rating</span>
+                                                <span class="value">4.3</span>
+                                            </div>
+                                        </div>
+                                        <div class="dept-trend up">+2% this week</div>
+                                    </div>
+                                    <div class="dept-card nursing">
+                                        <div class="dept-header">
+                                            <i class="fas fa-user-nurse"></i>
+                                            <h4>Nursing Support</h4>
+                                        </div>
+                                        <div class="dept-stats">
+                                            <div class="dept-stat">
+                                                <span class="label">Staff</span>
+                                                <span class="value">25</span>
+                                            </div>
+                                            <div class="dept-stat">
+                                                <span class="label">Completion</span>
+                                                <span class="value">88%</span>
+                                            </div>
+                                            <div class="dept-stat">
+                                                <span class="label">Rating</span>
+                                                <span class="value">4.5</span>
+                                            </div>
+                                        </div>
+                                        <div class="dept-trend up">+3% this week</div>
+                                    </div>
+                                    <div class="dept-card laboratory">
+                                        <div class="dept-header">
+                                            <i class="fas fa-flask"></i>
+                                            <h4>Laboratory</h4>
+                                        </div>
+                                        <div class="dept-stats">
+                                            <div class="dept-stat">
+                                                <span class="label">Staff</span>
+                                                <span class="value">20</span>
+                                            </div>
+                                            <div class="dept-stat">
+                                                <span class="label">Completion</span>
+                                                <span class="value">85%</span>
+                                            </div>
+                                            <div class="dept-stat">
+                                                <span class="label">Rating</span>
+                                                <span class="value">4.2</span>
+                                            </div>
+                                        </div>
+                                        <div class="dept-trend down">-1% this week</div>
+                                    </div>
+                                    <div class="dept-card administrative">
+                                        <div class="dept-header">
+                                            <i class="fas fa-desktop"></i>
+                                            <h4>Administrative</h4>
+                                        </div>
+                                        <div class="dept-stats">
+                                            <div class="dept-stat">
+                                                <span class="label">Staff</span>
+                                                <span class="value">12</span>
+                                            </div>
+                                            <div class="dept-stat">
+                                                <span class="label">Completion</span>
+                                                <span class="value">95%</span>
+                                            </div>
+                                            <div class="dept-stat">
+                                                <span class="label">Rating</span>
+                                                <span class="value">4.1</span>
+                                            </div>
+                                        </div>
+                                        <div class="dept-trend up">+1% this week</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../assets/js/admin.js"></script>
+    <script>
+        // Department Performance Chart
+        const deptPerfCtx = document.getElementById('departmentPerformanceChart').getContext('2d');
+        const deptPerfChart = new Chart(deptPerfCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [
+                    {
+                        label: 'Cleaning',
+                        data: [85, 88, 90, 92, 91, 89, 92],
+                        backgroundColor: '#1a73e8',
+                        borderColor: '#0d47a1',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Nursing',
+                        data: [82, 85, 87, 88, 86, 85, 88],
+                        backgroundColor: '#34a853',
+                        borderColor: '#2e7d32',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Laboratory',
+                        data: [80, 82, 83, 85, 84, 82, 85],
+                        backgroundColor: '#f9ab00',
+                        borderColor: '#f57c00',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Completion Rate (%)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Department Distribution Chart
+        const deptDistCtx = document.getElementById('departmentDistributionChart').getContext('2d');
+        const deptDistChart = new Chart(deptDistCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Cleaning', 'Nursing', 'Laboratory', 'Administrative', 'Operational'],
+                datasets: [{
+                    data: [35, 25, 20, 12, 8],
+                    backgroundColor: [
+                        '#1a73e8',
+                        '#34a853',
+                        '#f9ab00',
+                        '#ea4335',
+                        '#4285f4'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Attendance Trend Chart
+        const attendanceCtx = document.getElementById('attendanceTrendChart').getContext('2d');
+        const attendanceChart = new Chart(attendanceCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Attendance Rate',
+                    data: [92, 94, 93, 95],
+                    borderColor: '#1a73e8',
+                    backgroundColor: 'rgba(26, 115, 232, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Attendance Rate (%)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Performance Metrics Chart
+        const metricsCtx = document.getElementById('performanceMetricsChart').getContext('2d');
+        const metricsChart = new Chart(metricsCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Task Completion', 'On-time Performance', 'Quality Rating', 'Efficiency', 'Attendance'],
+                datasets: [{
+                    label: 'Current Month',
+                    data: [89, 85, 87, 82, 94],
+                    backgroundColor: 'rgba(26, 115, 232, 0.2)',
+                    borderColor: '#1a73e8',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#1a73e8'
+                }, {
+                    label: 'Previous Month',
+                    data: [85, 82, 84, 80, 92],
+                    backgroundColor: 'rgba(52, 168, 83, 0.2)',
+                    borderColor: '#34a853',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#34a853'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        function updateDepartmentChart(period) {
+            alert('Updating chart for: ' + period);
+            // In real implementation, this would fetch new data based on period
+        }
+
+        function refreshActivity() {
+            alert('Refreshing activity feed...');
+            // In real implementation, this would fetch latest activities
+        }
+
+        // Simulate real-time updates
+        setInterval(() => {
+            // This would typically fetch new data from the server
+            console.log('Checking for updates...');
+        }, 30000); // Check every 30 seconds
+    </script>
+
+    <style>
+        .stat-trend {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .stat-trend.up {
+            color: #34a853;
+        }
+
+        .stat-trend.down {
+            color: #ea4335;
+        }
+
+        .activity-feed {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: #f8f9fa;
+        }
+
+        .activity-item.new {
+            background: #f0f7ff;
+            border-left-color: #1a73e8;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            color: white;
+        }
+
+        .activity-icon.success {
+            background: #34a853;
+        }
+
+        .activity-icon.warning {
+            background: #f9ab00;
+        }
+
+        .activity-icon.primary {
+            background: #1a73e8;
+        }
+
+        .activity-icon.danger {
+            background: #ea4335;
+        }
+
+        .activity-icon.info {
+            background: #4285f4;
+        }
+
+        .activity-content h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .activity-content p {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .alerts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .alert-item.high {
+            background: #fff5f5;
+            border-left-color: #ea4335;
+        }
+
+        .alert-item.medium {
+            background: #fffbf0;
+            border-left-color: #f9ab00;
+        }
+
+        .alert-item.low {
+            background: #f8f9fa;
+            border-left-color: #1a73e8;
+        }
+
+        .alert-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+            color: white;
+        }
+
+        .alert-item.high .alert-icon {
+            background: #ea4335;
+        }
+
+        .alert-item.medium .alert-icon {
+            background: #f9ab00;
+        }
+
+        .alert-item.low .alert-icon {
+            background: #1a73e8;
+        }
+
+        .alert-content h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        .alert-content p {
+            color: #6c757d;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .alert-time {
+            color: #999;
+            font-size: 0.7rem;
+        }
+
+        .quick-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .quick-stat {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .quick-stat i {
+            font-size: 1.5rem;
+            color: #1a73e8;
+            width: 30px;
+        }
+
+        .quick-stat h4 {
+            margin-bottom: 2px;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        .quick-stat p {
+            color: #6c757d;
+            font-size: 0.8rem;
+            margin: 0;
+        }
+
+        .department-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .dept-card {
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .dept-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .dept-card.cleaning {
+            border-left-color: #1a73e8;
+            background: linear-gradient(135deg, #f8f9fa, #e8f0fe);
+        }
+
+        .dept-card.nursing {
+            border-left-color: #34a853;
+            background: linear-gradient(135deg, #f8f9fa, #f0fff4);
+        }
+
+        .dept-card.laboratory {
+            border-left-color: #f9ab00;
+            background: linear-gradient(135deg, #f8f9fa, #fffbf0);
+        }
+
+        .dept-card.administrative {
+            border-left-color: #ea4335;
+            background: linear-gradient(135deg, #f8f9fa, #fff5f5);
+        }
+
+        .dept-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .dept-header i {
+            font-size: 1.5rem;
+            width: 30px;
+        }
+
+        .dept-card.cleaning .dept-header i { color: #1a73e8; }
+        .dept-card.nursing .dept-header i { color: #34a853; }
+        .dept-card.laboratory .dept-header i { color: #f9ab00; }
+        .dept-card.administrative .dept-header i { color: #ea4335; }
+
+        .dept-header h4 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .dept-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .dept-stat {
+            text-align: center;
+        }
+
+        .dept-stat .label {
+            display: block;
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-bottom: 4px;
+        }
+
+        .dept-stat .value {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .dept-trend {
+            text-align: center;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .dept-trend.up {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .dept-trend.down {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 768px) {
+            .department-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .dept-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .dept-stat {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    </style>
+</body>
+</html>

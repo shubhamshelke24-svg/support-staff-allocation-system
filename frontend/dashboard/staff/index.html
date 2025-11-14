@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard - Hospital Staff Management</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Cleaning Staff</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item active">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="view-duty.html" class="menu-item">
+                    <i class="fas fa-list"></i> My Duties
+                </a>
+                <a href="check-in-out.html" class="menu-item">
+                    <i class="fas fa-qrcode"></i> Check In/Out
+                </a>
+                <a href="upload-proof.html" class="menu-item">
+                    <i class="fas fa-camera"></i> Upload Proof
+                </a>
+                <a href="request-extension.html" class="menu-item">
+                    <i class="fas fa-clock"></i> Request Extension
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-tachometer-alt"></i> Staff Dashboard</h1>
+                    <small>Welcome back, John!</small>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">John Smith</div>
+                        <div class="user-role">Cleaning Staff</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">JS</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Today's Summary -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Assigned Tasks</div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    
+                    <div class="stat-card info">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-value">4.5</div>
+                        <div class="stat-label">Avg. Rating</div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row mb-4">
+                    <div class="col-4">
+                        <div class="card text-center action-card" onclick="location.href='check-in-out.html'">
+                            <div class="card-body">
+                                <i class="fas fa-qrcode"></i>
+                                <h4>Check In/Out</h4>
+                                <p>Scan QR to start/end tasks</p>
+                                <span class="action-badge">2 pending</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card text-center action-card" onclick="location.href='upload-proof.html'">
+                            <div class="card-body">
+                                <i class="fas fa-camera"></i>
+                                <h4>Upload Proof</h4>
+                                <p>Submit task completion photos</p>
+                                <span class="action-badge">1 pending</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card text-center action-card" onclick="location.href='request-extension.html'">
+                            <div class="card-body">
+                                <i class="fas fa-clock"></i>
+                                <h4>Request Help</h4>
+                                <p>Get support or time extension</p>
+                                <span class="action-badge">Available</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's Schedule -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-calendar-day"></i> Today's Schedule</h3>
+                        <small>January 15, 2024</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="schedule-timeline">
+                            <div class="schedule-item completed">
+                                <div class="schedule-time">08:00 - 10:00</div>
+                                <div class="schedule-details">
+                                    <h4>Ward 101 Cleaning & Disinfection</h4>
+                                    <p>1st Floor, Room 101 • <span class="text-success">Completed</span></p>
+                                    <div class="schedule-actions">
+                                        <span class="medical-badge badge-success">
+                                            <i class="fas fa-check"></i> Approved
+                                        </span>
+                                        <span class="rating">⭐ 4.8</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="schedule-item completed">
+                                <div class="schedule-time">10:15 - 11:15</div>
+                                <div class="schedule-details">
+                                    <h4>Corridor Sanitization</h4>
+                                    <p>Main Corridor, 1st Floor • <span class="text-success">Completed</span></p>
+                                    <div class="schedule-actions">
+                                        <span class="medical-badge badge-success">
+                                            <i class="fas fa-check"></i> Approved
+                                        </span>
+                                        <span class="rating">⭐ 4.5</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="schedule-item in-progress">
+                                <div class="schedule-time">11:30 - 01:00</div>
+                                <div class="schedule-details">
+                                    <h4>Washroom Deep Cleaning</h4>
+                                    <p>2nd Floor Washrooms • <span class="text-warning">In Progress</span></p>
+                                    <div class="schedule-actions">
+                                        <button class="btn btn-primary btn-sm">
+                                            <i class="fas fa-qrcode"></i> Check Out
+                                        </button>
+                                        <button class="btn btn-success btn-sm">
+                                            <i class="fas fa-camera"></i> Upload Proof
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="schedule-item upcoming">
+                                <div class="schedule-time">02:00 - 03:30</div>
+                                <div class="schedule-details">
+                                    <h4>ICU Area Sterilization</h4>
+                                    <p>ICU Section, 3rd Floor • <span class="text-info">Upcoming</span></p>
+                                    <div class="schedule-actions">
+                                        <span class="medical-badge badge-info">Starts in 2h 15m</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="schedule-item upcoming">
+                                <div class="schedule-time">04:00 - 05:00</div>
+                                <div class="schedule-details">
+                                    <h4>Equipment Cleaning</h4>
+                                    <p>Storage Room • <span class="text-info">Upcoming</span></p>
+                                    <div class="schedule-actions">
+                                        <span class="medical-badge badge-info">Starts in 4h 15m</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Summary -->
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-line"></i> Weekly Performance</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="weeklyPerformance" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-award"></i> Achievements</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="achievements-list">
+                                    <div class="achievement-item">
+                                        <i class="fas fa-trophy gold"></i>
+                                        <div>
+                                            <h4>Top Performer</h4>
+                                            <p>Last week • Cleaning Department</p>
+                                        </div>
+                                    </div>
+                                    <div class="achievement-item">
+                                        <i class="fas fa-star blue"></i>
+                                        <div>
+                                            <h4>Perfect Attendance</h4>
+                                            <p>15 days streak</p>
+                                        </div>
+                                    </div>
+                                    <div class="achievement-item">
+                                        <i class="fas fa-bolt orange"></i>
+                                        <div>
+                                            <h4>Early Completer</h4>
+                                            <p>10+ tasks completed early</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../assets/js/staff.js"></script>
+    <script>
+        // Weekly Performance Chart
+        const weeklyCtx = document.getElementById('weeklyPerformance').getContext('2d');
+        const weeklyChart = new Chart(weeklyCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Daily Rating',
+                    data: [4.2, 4.5, 4.3, 4.7, 4.8, 4.6, 4.5],
+                    borderColor: '#1a73e8',
+                    backgroundColor: 'rgba(26, 115, 232, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5,
+                        title: {
+                            display: true,
+                            text: 'Rating (out of 5)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <style>
+        .action-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .action-card i {
+            font-size: 2.5rem;
+            color: #1a73e8;
+            margin-bottom: 15px;
+        }
+
+        .action-card h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .action-card p {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .action-badge {
+            background: #34a853;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .schedule-timeline {
+            padding: 10px 0;
+        }
+
+        .schedule-item {
+            display: flex;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid;
+        }
+
+        .schedule-item.completed {
+            background: #f8fff9;
+            border-left-color: #34a853;
+        }
+
+        .schedule-item.in-progress {
+            background: #fffbf0;
+            border-left-color: #f9ab00;
+        }
+
+        .schedule-item.upcoming {
+            background: #f8f9fa;
+            border-left-color: #1a73e8;
+        }
+
+        .schedule-time {
+            min-width: 120px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .schedule-details {
+            flex: 1;
+        }
+
+        .schedule-details h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .schedule-details p {
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        .schedule-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .rating {
+            color: #f9ab00;
+            font-weight: 600;
+        }
+
+        .achievements-list {
+            padding: 10px 0;
+        }
+
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .achievement-item i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            width: 30px;
+        }
+
+        .achievement-item.gold { color: #f9ab00; }
+        .achievement-item.blue { color: #1a73e8; }
+        .achievement-item.orange { color: #ff6d00; }
+
+        .achievement-item h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .achievement-item p {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+    </style>
+</body>
+</html>

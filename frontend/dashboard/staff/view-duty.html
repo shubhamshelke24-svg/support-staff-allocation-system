@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Duties - Staff Dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Cleaning Staff</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="view-duty.html" class="menu-item active">
+                    <i class="fas fa-list"></i> My Duties
+                </a>
+                <a href="check-in-out.html" class="menu-item">
+                    <i class="fas fa-qrcode"></i> Check In/Out
+                </a>
+                <a href="upload-proof.html" class="menu-item">
+                    <i class="fas fa-camera"></i> Upload Proof
+                </a>
+                <a href="request-extension.html" class="menu-item">
+                    <i class="fas fa-clock"></i> Request Extension
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-list"></i> My Assigned Duties</h1>
+                    <small>Your task schedule and details</small>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">John Smith</div>
+                        <div class="user-role">Cleaning Staff</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">JS</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Daily Summary -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Total Tasks</div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    
+                    <div class="stat-card info">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-value">4.5</div>
+                        <div class="stat-label">Avg. Rating</div>
+                    </div>
+                </div>
+
+                <!-- Task Filter -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Filter by Status</label>
+                                <select class="form-control" onchange="filterDuties(this.value)">
+                                    <option value="all">All Duties</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="scheduled">Scheduled</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <label>Filter by Date</label>
+                                <input type="date" class="form-control" onchange="filterByDate(this.value)">
+                            </div>
+                            <div class="col-4">
+                                <label>Sort By</label>
+                                <select class="form-control" onchange="sortDuties(this.value)">
+                                    <option value="time">Time</option>
+                                    <option value="priority">Priority</option>
+                                    <option value="status">Status</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Duties Timeline -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-calendar-day"></i> Today's Duties - January 15, 2024</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="duties-timeline">
+                            <!-- Completed Duty -->
+                            <div class="timeline-item completed">
+                                <div class="timeline-marker">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="duty-header">
+                                        <h4>Ward 101 Cleaning & Disinfection</h4>
+                                        <span class="medical-badge badge-success">Completed</span>
+                                    </div>
+                                    <div class="duty-details">
+                                        <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> 1st Floor, Room 101</p>
+                                        <p><i class="fas fa-clock"></i> <strong>Time:</strong> 08:00 AM - 10:00 AM</p>
+                                        <p><i class="fas fa-list"></i> <strong>Task:</strong> Complete room cleaning, bed disinfection, surface sanitization</p>
+                                        <p><i class="fas fa-tools"></i> <strong>Equipment:</strong> Cleaning cart, disinfectant, gloves</p>
+                                    </div>
+                                    <div class="duty-actions">
+                                        <span class="rating-badge">⭐ 4.8</span>
+                                        <span class="completion-time">Completed on time</span>
+                                        <button class="btn btn-outline btn-sm" onclick="viewTaskDetails('TASK-001')">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Completed Duty -->
+                            <div class="timeline-item completed">
+                                <div class="timeline-marker">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="duty-header">
+                                        <h4>Corridor Sanitization</h4>
+                                        <span class="medical-badge badge-success">Completed</span>
+                                    </div>
+                                    <div class="duty-details">
+                                        <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> Main Corridor, 1st Floor</p>
+                                        <p><i class="fas fa-clock"></i> <strong>Time:</strong> 10:15 AM - 11:15 AM</p>
+                                        <p><i class="fas fa-list"></i> <strong>Task:</strong> Floor mopping, handrail sanitization, waste disposal</p>
+                                        <p><i class="fas fa-tools"></i> <strong>Equipment:</strong> Mop, sanitizer, waste bags</p>
+                                    </div>
+                                    <div class="duty-actions">
+                                        <span class="rating-badge">⭐ 4.5</span>
+                                        <span class="completion-time">Completed early</span>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- In Progress Duty -->
+                            <div class="timeline-item in-progress">
+                                <div class="timeline-marker">
+                                    <i class="fas fa-spinner"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="duty-header">
+                                        <h4>Washroom Deep Cleaning</h4>
+                                        <span class="medical-badge badge-warning">In Progress</span>
+                                    </div>
+                                    <div class="duty-details">
+                                        <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> 2nd Floor Washrooms</p>
+                                        <p><i class="fas fa-clock"></i> <strong>Time:</strong> 11:30 AM - 01:00 PM</p>
+                                        <p><i class="fas fa-list"></i> <strong>Task:</strong> Toilet cleaning, floor scrubbing, mirror polishing, restock supplies</p>
+                                        <p><i class="fas fa-tools"></i> <strong>Equipment:</strong> Cleaning kit, gloves, mask</p>
+                                        <div class="progress-section">
+                                            <label>Current Progress: 60%</label>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 60%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="duty-actions">
+                                        <button class="btn btn-primary btn-sm" onclick="checkOutDuty('TASK-003')">
+                                            <i class="fas fa-qrcode"></i> Check Out
+                                        </button>
+                                        <button class="btn btn-success btn-sm" onclick="uploadProof('TASK-003')">
+                                            <i class="fas fa-camera"></i> Upload Proof
+                                        </button>
+                                        <button class="btn btn-warning btn-sm" onclick="requestExtension('TASK-003')">
+                                            <i class="fas fa-clock"></i> Need More Time
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Upcoming Duty -->
+                            <div class="timeline-item upcoming">
+                                <div class="timeline-marker">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="duty-header">
+                                        <h4>ICU Area Sterilization</h4>
+                                        <span class="medical-badge badge-info">Upcoming</span>
+                                    </div>
+                                    <div class="duty-details">
+                                        <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> ICU Section, 3rd Floor</p>
+                                        <p><i class="fas fa-clock"></i> <strong>Time:</strong> 02:00 PM - 03:30 PM</p>
+                                        <p><i class="fas fa-list"></i> <strong>Task:</strong> High-level sterilization, equipment cleaning, surface disinfection</p>
+                                        <p><i class="fas fa-tools"></i> <strong>Equipment:</strong> Sterilization kit, protective gear</p>
+                                        <p><i class="fas fa-exclamation-triangle"></i> <strong>Note:</strong> Strict sterilization protocols required</p>
+                                    </div>
+                                    <div class="duty-actions">
+                                        <span class="time-remaining">Starts in 2 hours 15 minutes</span>
+                                        <button class="btn btn-outline btn-sm" disabled>
+                                            <i class="fas fa-qrcode"></i> Check In Available at 01:45 PM
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Upcoming Duty -->
+                            <div class="timeline-item upcoming">
+                                <div class="timeline-marker">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="duty-header">
+                                        <h4>Equipment Cleaning & Maintenance</h4>
+                                        <span class="medical-badge badge-info">Upcoming</span>
+                                    </div>
+                                    <div class="duty-details">
+                                        <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> Storage Room, Basement</p>
+                                        <p><i class="fas fa-clock"></i> <strong>Time:</strong> 04:00 PM - 05:00 PM</p>
+                                        <p><i class="fas fa-list"></i> <strong>Task:</strong> Clean and maintain cleaning equipment, restock supplies</p>
+                                        <p><i class="fas fa-tools"></i> <strong>Equipment:</strong> Maintenance tools, cleaning supplies</p>
+                                    </div>
+                                    <div class="duty-actions">
+                                        <span class="time-remaining">Starts in 4 hours 15 minutes</span>
+                                        <button class="btn btn-outline btn-sm" disabled>
+                                            <i class="fas fa-qrcode"></i> Check In Available at 03:45 PM
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Summary -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-line"></i> Weekly Performance Summary</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-8">
+                                <canvas id="weeklyPerformanceChart" width="400" height="200"></canvas>
+                            </div>
+                            <div class="col-4">
+                                <div class="performance-stats">
+                                    <div class="stat-item">
+                                        <h4>Task Completion Rate</h4>
+                                        <div class="stat-value">94%</div>
+                                        <div class="stat-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 94%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <h4>On-time Performance</h4>
+                                        <div class="stat-value">89%</div>
+                                        <div class="stat-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 89%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <h4>Average Rating</h4>
+                                        <div class="stat-value">4.5/5</div>
+                                        <div class="stat-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 90%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../assets/js/staff.js"></script>
+    <script>
+        // Weekly Performance Chart
+        const weeklyCtx = document.getElementById('weeklyPerformanceChart').getContext('2d');
+        const weeklyChart = new Chart(weeklyCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Tasks Completed',
+                    data: [4, 5, 3, 6, 5, 4, 3],
+                    borderColor: '#1a73e8',
+                    backgroundColor: 'rgba(26, 115, 232, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'Average Rating',
+                    data: [4.2, 4.5, 4.3, 4.7, 4.8, 4.6, 4.5],
+                    borderColor: '#34a853',
+                    backgroundColor: 'rgba(52, 168, 83, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        title: {
+                            display: true,
+                            text: 'Performance Metrics'
+                        }
+                    }
+                }
+            }
+        });
+
+        function filterDuties(status) {
+            console.log('Filtering duties by status:', status);
+            // Implementation for filtering
+        }
+
+        function filterByDate(date) {
+            console.log('Filtering duties by date:', date);
+            // Implementation for date filtering
+        }
+
+        function sortDuties(criteria) {
+            console.log('Sorting duties by:', criteria);
+            // Implementation for sorting
+        }
+
+        function viewTaskDetails(taskId) {
+            alert('Viewing details for task: ' + taskId);
+            // Implementation for task details
+        }
+
+        function checkOutDuty(taskId) {
+            // This would typically open QR scanner or check-out modal
+            alert('Checking out from task: ' + taskId);
+        }
+    </script>
+
+    <style>
+        .duties-timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .duties-timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e1e5e9;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline-marker {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .timeline-item.completed .timeline-marker {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .timeline-item.in-progress .timeline-marker {
+            background: #fff3cd;
+            color: #856404;
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-item.upcoming .timeline-marker {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 1px solid #e1e5e9;
+        }
+
+        .duty-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .duty-header h4 {
+            margin: 0;
+            color: #2c3e50;
+            flex: 1;
+            margin-right: 15px;
+        }
+
+        .duty-details {
+            margin-bottom: 15px;
+        }
+
+        .duty-details p {
+            margin-bottom: 8px;
+            color: #555;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .duty-details i {
+            width: 16px;
+            margin-right: 8px;
+            color: #1a73e8;
+            margin-top: 2px;
+        }
+
+        .progress-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .progress-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .duty-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .rating-badge {
+            background: #fff3cd;
+            color: #856404;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+
+        .completion-time {
+            color: #34a853;
+            font-weight: 500;
+        }
+
+        .time-remaining {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .performance-stats {
+            padding: 20px;
+        }
+
+        .stat-item {
+            margin-bottom: 25px;
+        }
+
+        .stat-item h4 {
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a73e8;
+            margin-bottom: 8px;
+        }
+
+        .stat-progress {
+            width: 100%;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .duty-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .duty-header h4 {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .duty-actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</body>
+</html>

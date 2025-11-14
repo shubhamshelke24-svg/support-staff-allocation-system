@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator Dashboard - Hospital Staff Management</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Cleaning Department</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item active">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="allocate-duties.html" class="menu-item">
+                    <i class="fas fa-tasks"></i> Allocate Duties
+                </a>
+                <a href="monitor-tasks.html" class="menu-item">
+                    <i class="fas fa-eye"></i> Monitor Tasks
+                </a>
+                <a href="verify-proofs.html" class="menu-item">
+                    <i class="fas fa-check-circle"></i> Verify Proofs
+                </a>
+                <a href="query-handling.html" class="menu-item">
+                    <i class="fas fa-comments"></i> Query Handling
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-tachometer-alt"></i> Operator Dashboard</h1>
+                    <small>Cleaning Department</small>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">Department Operator</div>
+                        <div class="user-role">Cleaning Department</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">OP</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Department Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value">35</div>
+                        <div class="stat-label">Total Staff</div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-value">32</div>
+                        <div class="stat-label">Active Today</div>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-value">28</div>
+                        <div class="stat-label">Tasks Today</div>
+                    </div>
+                    
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Pending Approval</div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row mb-4">
+                    <div class="col-3">
+                        <div class="card text-center quick-action">
+                            <div class="card-body">
+                                <i class="fas fa-plus-circle"></i>
+                                <h4>Assign Duty</h4>
+                                <p>Create new task assignments</p>
+                                <a href="allocate-duties.html" class="btn btn-primary">Go</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card text-center quick-action">
+                            <div class="card-body">
+                                <i class="fas fa-eye"></i>
+                                <h4>Monitor Tasks</h4>
+                                <p>Track ongoing activities</p>
+                                <a href="monitor-tasks.html" class="btn btn-success">Go</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card text-center quick-action">
+                            <div class="card-body">
+                                <i class="fas fa-check-circle"></i>
+                                <h4>Verify Proofs</h4>
+                                <p>Approve completed work</p>
+                                <a href="verify-proofs.html" class="btn btn-warning">Go</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card text-center quick-action">
+                            <div class="card-body">
+                                <i class="fas fa-comments"></i>
+                                <h4>Queries</h4>
+                                <p>Handle staff requests</p>
+                                <a href="query-handling.html" class="btn btn-info">Go</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's Overview -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Today's Task Status</h3>
+                                <p>Cleaning Department</p>
+                            </div>
+                            <canvas id="taskStatusChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="col-6">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Performance Today</h3>
+                                <p>Completion rate by time</p>
+                            </div>
+                            <canvas id="performanceChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-timeline">
+                            <div class="activity-item">
+                                <div class="activity-icon success">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>John Smith completed Ward 101 cleaning</h4>
+                                    <p>10:30 AM - Submitted photo proof</p>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon warning">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>Emily Wilson requested time extension</h4>
+                                    <p>10:15 AM - Needs 15 more minutes</p>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon info">
+                                    <i class="fas fa-question"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>Mike Davis reported equipment issue</h4>
+                                    <p>09:45 AM - Cleaning supplies needed</p>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon primary">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>New duty assigned to Sarah Johnson</h4>
+                                    <p>09:30 AM - ICU sterilization</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../assets/js/operator.js"></script>
+    <script>
+        // Task Status Chart
+        const taskCtx = document.getElementById('taskStatusChart').getContext('2d');
+        const taskChart = new Chart(taskCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed', 'In Progress', 'Not Started', 'Delayed'],
+                datasets: [{
+                    data: [18, 6, 3, 1],
+                    backgroundColor: [
+                        '#34a853',
+                        '#1a73e8',
+                        '#f9ab00',
+                        '#ea4335'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Performance Chart
+        const perfCtx = document.getElementById('performanceChart').getContext('2d');
+        const perfChart = new Chart(perfCtx, {
+            type: 'bar',
+            data: {
+                labels: ['6-8 AM', '8-10 AM', '10-12 PM', '12-2 PM', '2-4 PM', '4-6 PM'],
+                datasets: [{
+                    label: 'Tasks Completed',
+                    data: [5, 8, 12, 6, 4, 2],
+                    backgroundColor: '#1a73e8',
+                    borderColor: '#0d47a1',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Tasks'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <style>
+        .quick-action {
+            transition: transform 0.2s ease;
+        }
+
+        .quick-action:hover {
+            transform: translateY(-5px);
+        }
+
+        .quick-action i {
+            font-size: 2.5rem;
+            color: #1a73e8;
+            margin-bottom: 15px;
+        }
+
+        .quick-action h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .quick-action p {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .activity-timeline {
+            padding: 20px 0;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .activity-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.success { background: #34a853; }
+        .activity-icon.warning { background: #f9ab00; }
+        .activity-icon.info { background: #4285f4; }
+        .activity-icon.primary { background: #1a73e8; }
+
+        .activity-content h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .activity-content p {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+    </style>
+</body>
+</html>

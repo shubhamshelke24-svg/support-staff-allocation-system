@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Extension - Staff Dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Cleaning Staff</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="view-duty.html" class="menu-item">
+                    <i class="fas fa-list"></i> My Duties
+                </a>
+                <a href="check-in-out.html" class="menu-item">
+                    <i class="fas fa-qrcode"></i> Check In/Out
+                </a>
+                <a href="upload-proof.html" class="menu-item">
+                    <i class="fas fa-camera"></i> Upload Proof
+                </a>
+                <a href="request-extension.html" class="menu-item active">
+                    <i class="fas fa-clock"></i> Request Extension
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-clock"></i> Request Time Extension</h1>
+                    <small>Request additional time or report issues</small>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">John Smith</div>
+                        <div class="user-role">Cleaning Staff</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">JS</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Current Active Task -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-running"></i> Currently Active Task</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="active-task">
+                            <div class="task-info">
+                                <h4>Washroom Deep Cleaning</h4>
+                                <div class="task-details">
+                                    <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> 2nd Floor Washrooms</p>
+                                    <p><i class="fas fa-clock"></i> <strong>Scheduled Time:</strong> 11:30 AM - 01:00 PM</p>
+                                    <p><i class="fas fa-stopwatch"></i> <strong>Time Elapsed:</strong> 45 minutes</p>
+                                    <p><i class="fas fa-hourglass-half"></i> <strong>Time Remaining:</strong> 45 minutes</p>
+                                </div>
+                            </div>
+                            <div class="task-status">
+                                <div class="progress-circle">
+                                    <div class="circle-background"></div>
+                                    <div class="circle-progress" style="transform: rotate(180deg)"></div>
+                                    <div class="circle-text">50%</div>
+                                </div>
+                                <span class="status-text">In Progress</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extension Request Form -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-plus-circle"></i> Request Time Extension</h3>
+                        <p>Request additional time to complete your current task</p>
+                    </div>
+                    <div class="card-body">
+                        <form id="extensionForm">
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label>Additional Time Needed *</label>
+                                    <div class="time-selection">
+                                        <div class="time-option" onclick="selectTime(5)">
+                                            <span>5 minutes</span>
+                                        </div>
+                                        <div class="time-option" onclick="selectTime(10)">
+                                            <span>10 minutes</span>
+                                        </div>
+                                        <div class="time-option active" onclick="selectTime(15)">
+                                            <span>15 minutes</span>
+                                        </div>
+                                        <div class="time-option" onclick="selectTime(20)">
+                                            <span>20 minutes</span>
+                                        </div>
+                                        <div class="time-custom">
+                                            <input type="number" id="customTime" min="1" max="20" placeholder="Custom" onchange="selectCustomTime(this.value)">
+                                            <span>minutes</span>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="selectedTime" name="extensionTime" value="15" required>
+                                </div>
+                                <div class="form-col">
+                                    <label>Reason for Extension *</label>
+                                    <select class="form-control" id="reasonSelect" required onchange="toggleCustomReason()">
+                                        <option value="">Select Reason</option>
+                                        <option value="additional_work">Additional work required</option>
+                                        <option value="equipment_issue">Equipment issue</option>
+                                        <option value="supply_shortage">Supply shortage</option>
+                                        <option value="unexpected_condition">Unexpected condition</option>
+                                        <option value="other">Other reason</option>
+                                    </select>
+                                    <div class="custom-reason" id="customReason" style="display: none; margin-top: 10px;">
+                                        <input type="text" class="form-control" placeholder="Please specify reason..." id="customReasonText">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label>Detailed Explanation *</label>
+                                    <textarea class="form-control" rows="4" placeholder="Please provide detailed explanation for the time extension..." required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label>Urgency Level</label>
+                                    <div class="urgency-levels">
+                                        <label class="urgency-option">
+                                            <input type="radio" name="urgency" value="low" checked>
+                                            <span class="urgency-dot low"></span>
+                                            <span>Low</span>
+                                        </label>
+                                        <label class="urgency-option">
+                                            <input type="radio" name="urgency" value="medium">
+                                            <span class="urgency-dot medium"></span>
+                                            <span>Medium</span>
+                                        </label>
+                                        <label class="urgency-option">
+                                            <input type="radio" name="urgency" value="high">
+                                            <span class="urgency-dot high"></span>
+                                            <span>High</span>
+                                        </label>
+                                        <label class="urgency-option">
+                                            <input type="radio" name="urgency" value="urgent">
+                                            <span class="urgency-dot urgent"></span>
+                                            <span>Urgent</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-col">
+                                    <label>Expected Impact</label>
+                                    <select class="form-control">
+                                        <option value="minor">Minor delay only</option>
+                                        <option value="moderate" selected>Moderate delay to schedule</option>
+                                        <option value="significant">Significant schedule impact</option>
+                                        <option value="critical">Critical - affects other tasks</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" required> I confirm that this extension is necessary to maintain work quality
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox"> I have notified my supervisor about this situation
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Alternative: Report Issue -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Report an Issue</h3>
+                        <p>Report problems that prevent task completion</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="issue-types">
+                            <div class="issue-card" onclick="selectIssue('equipment')">
+                                <i class="fas fa-tools"></i>
+                                <h4>Equipment Issue</h4>
+                                <p>Broken or malfunctioning equipment</p>
+                            </div>
+                            <div class="issue-card" onclick="selectIssue('supplies')">
+                                <i class="fas fa-box"></i>
+                                <h4>Supply Shortage</h4>
+                                <p>Missing or insufficient supplies</p>
+                            </div>
+                            <div class="issue-card" onclick="selectIssue('safety')">
+                                <i class="fas fa-shield-alt"></i>
+                                <h4>Safety Concern</h4>
+                                <p>Unsafe working conditions</p>
+                            </div>
+                            <div class="issue-card" onclick="selectIssue('other')">
+                                <i class="fas fa-question-circle"></i>
+                                <h4>Other Issue</h4>
+                                <p>Any other problem</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Request History -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-history"></i> Recent Requests</h3>
+                        <p>Your recent extension and issue requests</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="requests-history">
+                            <div class="request-item approved">
+                                <div class="request-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="request-content">
+                                    <h4>Time Extension Approved</h4>
+                                    <p>Ward 101 Cleaning • 15 minutes • Additional sanitization required</p>
+                                    <span class="request-time">Today, 10:30 AM</span>
+                                </div>
+                                <div class="request-status">
+                                    <span class="medical-badge badge-success">Approved</span>
+                                </div>
+                            </div>
+                            <div class="request-item pending">
+                                <div class="request-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="request-content">
+                                    <h4>Equipment Issue Reported</h4>
+                                    <p>Corridor Sanitization • Vacuum cleaner malfunction</p>
+                                    <span class="request-time">Today, 09:45 AM</span>
+                                </div>
+                                <div class="request-status">
+                                    <span class="medical-badge badge-warning">Pending</span>
+                                </div>
+                            </div>
+                            <div class="request-item resolved">
+                                <div class="request-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="request-content">
+                                    <h4>Supply Request Fulfilled</h4>
+                                    <p>ICU Sterilization • Disinfectant restocked</p>
+                                    <span class="request-time">Yesterday, 02:15 PM</span>
+                                </div>
+                                <div class="request-status">
+                                    <span class="medical-badge badge-info">Resolved</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission Section -->
+                <div class="fixed-submit">
+                    <div class="submit-actions">
+                        <button class="btn btn-primary btn-lg" onclick="submitExtensionRequest()">
+                            <i class="fas fa-paper-plane"></i> Submit Extension Request
+                        </button>
+                        <button class="btn btn-outline" onclick="saveAsDraft()">
+                            <i class="fas fa-save"></i> Save as Draft
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Issue Report Modal -->
+    <div id="issueModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="issueModalTitle">Report Issue</h3>
+                <span class="close" onclick="closeIssueModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="issueForm">
+                    <div class="form-group">
+                        <label>Issue Description *</label>
+                        <textarea class="form-control" rows="4" placeholder="Describe the issue in detail..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Immediate Action Required</label>
+                        <select class="form-control">
+                            <option value="none">No immediate action</option>
+                            <option value="technical_support">Technical support needed</option>
+                            <option value="supply_delivery">Supply delivery required</option>
+                            <option value="safety_inspection">Safety inspection needed</option>
+                            <option value="task_reassignment">Task reassignment</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Can you continue working?</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="continue_working" value="yes" checked>
+                                <span>Yes, with limitations</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="continue_working" value="partial">
+                                <span>Partially</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="continue_working" value="no">
+                                <span>No, completely stopped</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="submitIssueReport()">
+                    <i class="fas fa-paper-plane"></i> Submit Issue Report
+                </button>
+                <button class="btn btn-secondary" onclick="closeIssueModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/staff.js"></script>
+    <script>
+        let selectedIssueType = '';
+
+        function selectTime(minutes) {
+            // Remove active class from all time options
+            document.querySelectorAll('.time-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            // Add active class to selected option
+            event.target.classList.add('active');
+            
+            // Update hidden input
+            document.getElementById('selectedTime').value = minutes;
+            
+            // Clear custom time input
+            document.getElementById('customTime').value = '';
+        }
+
+        function selectCustomTime(minutes) {
+            if (minutes >= 1 && minutes <= 20) {
+                // Remove active class from all time options
+                document.querySelectorAll('.time-option').forEach(option => {
+                    option.classList.remove('active');
+                });
+                
+                // Update hidden input
+                document.getElementById('selectedTime').value = minutes;
+            }
+        }
+
+        function toggleCustomReason() {
+            const reasonSelect = document.getElementById('reasonSelect');
+            const customReason = document.getElementById('customReason');
+            
+            if (reasonSelect.value === 'other') {
+                customReason.style.display = 'block';
+            } else {
+                customReason.style.display = 'none';
+            }
+        }
+
+        function selectIssue(issueType) {
+            selectedIssueType = issueType;
+            const issueTitles = {
+                'equipment': 'Report Equipment Issue',
+                'supplies': 'Report Supply Shortage',
+                'safety': 'Report Safety Concern',
+                'other': 'Report Other Issue'
+            };
+            
+            document.getElementById('issueModalTitle').textContent = issueTitles[issueType];
+            document.getElementById('issueModal').style.display = 'block';
+        }
+
+        function closeIssueModal() {
+            document.getElementById('issueModal').style.display = 'none';
+            document.getElementById('issueForm').reset();
+            selectedIssueType = '';
+        }
+
+        function submitExtensionRequest() {
+            const form = document.getElementById('extensionForm');
+            if (!form.checkValidity()) {
+                alert('Please fill all required fields.');
+                return;
+            }
+            
+            const extensionTime = document.getElementById('selectedTime').value;
+            
+            // Submit extension request
+            alert(`Extension request submitted for ${extensionTime} minutes. Waiting for operator approval.`);
+            
+            // Reset form
+            form.reset();
+            
+            // Show success message
+            showNotification('Extension request submitted successfully!', 'success');
+        }
+
+        function submitIssueReport() {
+            const form = document.getElementById('issueForm');
+            if (!form.checkValidity()) {
+                alert('Please fill all required fields.');
+                return;
+            }
+            
+            // Submit issue report
+            alert(`Issue report submitted for ${selectedIssueType}. Support team notified.`);
+            
+            // Close modal and reset form
+            closeIssueModal();
+            
+            // Show success message
+            showNotification('Issue report submitted successfully!', 'success');
+        }
+
+        function saveAsDraft() {
+            alert('Extension request saved as draft.');
+            // Implementation to save draft
+        }
+
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : 'info'}-circle"></i>
+                <span>${message}</span>
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('issueModal');
+            if (event.target === modal) {
+                closeIssueModal();
+            }
+        }
+    </script>
+
+    <style>
+        .active-task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .task-info h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .task-details p {
+            margin-bottom: 5px;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+
+        .task-details i {
+            width: 16px;
+            margin-right: 8px;
+            color: #1a73e8;
+        }
+
+        .task-status {
+            text-align: center;
+        }
+
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            margin: 0 auto 10px;
+        }
+
+        .circle-background {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #e1e5e9;
+        }
+
+        .circle-progress {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(#1a73e8 0deg, #e1e5e9 0deg);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .circle-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .status-text {
+            color: #1a73e8;
+            font-weight: 500;
+        }
+
+        .time-selection {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .time-option {
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .time-option:hover {
+            border-color: #1a73e8;
+        }
+
+        .time-option.active {
+            border-color: #1a73e8;
+            background: #e8f0fe;
+            color: #1a73e8;
+            font-weight: 600;
+        }
+
+        .time-custom {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            flex: 2;
+        }
+
+        .time-custom input {
+            border: none;
+            outline: none;
+            width: 60px;
+            text-align: center;
+            background: transparent;
+        }
+
+        .urgency-levels {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .urgency-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .urgency-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .urgency-dot.low { background: #34a853; }
+        .urgency-dot.medium { background: #f9ab00; }
+        .urgency-dot.high { background: #ea4335; }
+        .urgency-dot.urgent { background: #d93025; }
+
+        .issue-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .issue-card {
+            padding: 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .issue-card:hover {
+            border-color: #1a73e8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .issue-card i {
+            font-size: 2rem;
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+
+        .issue-card h4 {
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .issue-card p {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .requests-history {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .request-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+            gap: 15px;
+        }
+
+        .request-item.approved {
+            border-left: 4px solid #34a853;
+            background: #f8fff9;
+        }
+
+        .request-item.pending {
+            border-left: 4px solid #f9ab00;
+            background: #fffbf0;
+        }
+
+        .request-item.resolved {
+            border-left: 4px solid #1a73e8;
+            background: #f8f9fa;
+        }
+
+        .request-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .request-item.approved .request-icon {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .request-item.pending .request-icon {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .request-item.resolved .request-icon {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .request-content {
+            flex: 1;
+        }
+
+        .request-content h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .request-content p {
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .request-time {
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+
+        .fixed-submit {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 20px;
+            border-top: 1px solid #e1e5e9;
+            margin: 20px -30px -30px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .submit-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.success {
+            background: #34a853;
+        }
+
+        .notification i {
+            margin-right: 8px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .active-task {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .task-status {
+                order: -1;
+            }
+            
+            .time-selection {
+                flex-direction: column;
+            }
+            
+            .urgency-levels {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .issue-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .submit-actions {
+                flex-direction: column;
+            }
+            
+            .submit-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</body>
+</html>

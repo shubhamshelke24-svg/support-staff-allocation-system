@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance - Admin Dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Staff Allocation System</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-chart-pie"></i> Overview
+                </a>
+                <a href="staff-management.html" class="menu-item">
+                    <i class="fas fa-users"></i> Staff Management
+                </a>
+                <a href="duties.html" class="menu-item">
+                    <i class="fas fa-tasks"></i> Duties & Allocation
+                </a>
+                <a href="attendance.html" class="menu-item active">
+                    <i class="fas fa-calendar-check"></i> Attendance
+                </a>
+                <a href="performance.html" class="menu-item">
+                    <i class="fas fa-chart-line"></i> Performance
+                </a>
+                <a href="reports.html" class="menu-item">
+                    <i class="fas fa-file-alt"></i> Reports
+                </a>
+                <a href="settings.html" class="menu-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-calendar-check"></i> Attendance Tracking</h1>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">System Administrator</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">SA</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Attendance Summary -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-value">142</div>
+                        <div class="stat-label">Present Today</div>
+                    </div>
+                    
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-times"></i>
+                        </div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Absent Today</div>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Late Arrivals</div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-value">94.7%</div>
+                        <div class="stat-label">Attendance Rate</div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Date</label>
+                                <input type="date" class="form-control" value="2024-01-15">
+                            </div>
+                            <div class="col-3">
+                                <label>Department</label>
+                                <select class="form-control">
+                                    <option value="">All Departments</option>
+                                    <option value="cleaning">Cleaning</option>
+                                    <option value="nursing">Nursing</option>
+                                    <option value="laboratory">Laboratory</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label>Status</label>
+                                <select class="form-control">
+                                    <option value="">All Status</option>
+                                    <option value="present">Present</option>
+                                    <option value="absent">Absent</option>
+                                    <option value="late">Late</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label>&nbsp;</label>
+                                <button class="btn btn-primary" style="width: 100%;">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attendance Table -->
+                <div class="card">
+                    <div class="card-header d-flex justify-between align-center">
+                        <h3>Today's Attendance (January 15, 2024)</h3>
+                        <button class="btn btn-success">
+                            <i class="fas fa-download"></i> Export Report
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Staff ID</th>
+                                        <th>Name</th>
+                                        <th>Department</th>
+                                        <th>Check-in</th>
+                                        <th>Check-out</th>
+                                        <th>Total Hours</th>
+                                        <th>Status</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>STF001</td>
+                                        <td>John Smith</td>
+                                        <td>Cleaning</td>
+                                        <td>07:55 AM</td>
+                                        <td>04:05 PM</td>
+                                        <td>8h 10m</td>
+                                        <td><span class="medical-badge badge-success">Present</span></td>
+                                        <td>On time</td>
+                                    </tr>
+                                    <tr>
+                                        <td>STF002</td>
+                                        <td>Sarah Johnson</td>
+                                        <td>Nursing</td>
+                                        <td>08:15 AM</td>
+                                        <td>04:20 PM</td>
+                                        <td>8h 5m</td>
+                                        <td><span class="medical-badge badge-warning">Late</span></td>
+                                        <td>15 minutes late</td>
+                                    </tr>
+                                    <tr>
+                                        <td>STF003</td>
+                                        <td>Mike Davis</td>
+                                        <td>Laboratory</td>
+                                        <td>07:50 AM</td>
+                                        <td>04:00 PM</td>
+                                        <td>8h 10m</td>
+                                        <td><span class="medical-badge badge-success">Present</span></td>
+                                        <td>On time</td>
+                                    </tr>
+                                    <tr>
+                                        <td>STF004</td>
+                                        <td>Emily Wilson</td>
+                                        <td>Cleaning</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td><span class="medical-badge badge-danger">Absent</span></td>
+                                        <td>Sick leave</td>
+                                    </tr>
+                                    <tr>
+                                        <td>STF005</td>
+                                        <td>Robert Brown</td>
+                                        <td>Administrative</td>
+                                        <td>08:05 AM</td>
+                                        <td>05:00 PM</td>
+                                        <td>8h 55m</td>
+                                        <td><span class="medical-badge badge-success">Present</span></td>
+                                        <td>Overtime</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Attendance Chart -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-bar"></i> Monthly Attendance Overview</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="attendanceChart" width="400" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../assets/js/admin.js"></script>
+    <script>
+        // Attendance Chart
+        const ctx = document.getElementById('attendanceChart').getContext('2d');
+        const attendanceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['1 Jan', '2 Jan', '3 Jan', '4 Jan', '5 Jan', '6 Jan', '7 Jan', '8 Jan', '9 Jan', '10 Jan', '11 Jan', '12 Jan', '13 Jan', '14 Jan', '15 Jan'],
+                datasets: [{
+                    label: 'Present Staff',
+                    data: [138, 140, 142, 139, 141, 143, 140, 142, 141, 143, 142, 140, 139, 141, 142],
+                    borderColor: '#34a853',
+                    backgroundColor: 'rgba(52, 168, 83, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'Absent Staff',
+                    data: [12, 10, 8, 11, 9, 7, 10, 8, 9, 7, 8, 10, 11, 9, 8],
+                    borderColor: '#ea4335',
+                    backgroundColor: 'rgba(234, 67, 53, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Staff'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

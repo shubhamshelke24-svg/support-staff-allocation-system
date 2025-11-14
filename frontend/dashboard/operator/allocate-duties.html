@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allocate Duties - Operator Dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Cleaning Department</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="allocate-duties.html" class="menu-item active">
+                    <i class="fas fa-tasks"></i> Allocate Duties
+                </a>
+                <a href="monitor-tasks.html" class="menu-item">
+                    <i class="fas fa-eye"></i> Monitor Tasks
+                </a>
+                <a href="verify-proofs.html" class="menu-item">
+                    <i class="fas fa-check-circle"></i> Verify Proofs
+                </a>
+                <a href="query-handling.html" class="menu-item">
+                    <i class="fas fa-comments"></i> Query Handling
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-tasks"></i> Allocate Duties</h1>
+                    <small>Cleaning Department Staff</small>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">Department Operator</div>
+                        <div class="user-role">Cleaning Department</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">OP</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Duty Assignment Form -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-plus-circle"></i> Assign New Duty</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="dutyAssignmentForm">
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label>Staff Member *</label>
+                                    <select class="form-control" required>
+                                        <option value="">Select Staff Member</option>
+                                        <option value="1">John Smith (Available)</option>
+                                        <option value="2">Sarah Johnson (Available)</option>
+                                        <option value="3">Mike Davis (2 tasks)</option>
+                                        <option value="4">Emily Wilson (Available)</option>
+                                        <option value="5">Robert Brown (1 task)</option>
+                                    </select>
+                                </div>
+                                <div class="form-col">
+                                    <label>Task Type *</label>
+                                    <select class="form-control" required>
+                                        <option value="">Select Task Type</option>
+                                        <option value="cleaning">Room Cleaning</option>
+                                        <option value="disinfection">Disinfection</option>
+                                        <option value="sanitization">Sanitization</option>
+                                        <option value="sterilization">Sterilization</option>
+                                        <option value="waste">Waste Management</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label>Task Description *</label>
+                                    <textarea class="form-control" rows="3" placeholder="Enter detailed task description..." required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label>Location *</label>
+                                    <input type="text" class="form-control" placeholder="e.g., Ward 101, 1st Floor" required>
+                                </div>
+                                <div class="form-col">
+                                    <label>Priority</label>
+                                    <select class="form-control">
+                                        <option value="low">Low</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="high">High</option>
+                                        <option value="urgent">Urgent</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label>Start Date & Time *</label>
+                                    <input type="datetime-local" class="form-control" required>
+                                </div>
+                                <div class="form-col">
+                                    <label>End Date & Time *</label>
+                                    <input type="datetime-local" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label>Estimated Duration (minutes)</label>
+                                    <input type="number" class="form-control" value="120" min="15" max="480">
+                                </div>
+                                <div class="form-col">
+                                    <label>Required Equipment</label>
+                                    <input type="text" class="form-control" placeholder="e.g., Cleaning cart, disinfectant">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" checked> Notify staff member via email
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox"> Mark as high priority
+                                </label>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane"></i> Assign Duty
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Staff Availability -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-user-check"></i> Staff Availability Today</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="staff-grid">
+                            <div class="staff-card available">
+                                <div class="staff-avatar">JS</div>
+                                <div class="staff-info">
+                                    <h4>John Smith</h4>
+                                    <p>2 tasks completed</p>
+                                    <span class="status-badge available">Available</span>
+                                </div>
+                            </div>
+                            <div class="staff-card available">
+                                <div class="staff-avatar">SJ</div>
+                                <div class="staff-info">
+                                    <h4>Sarah Johnson</h4>
+                                    <p>1 task in progress</p>
+                                    <span class="status-badge available">Available</span>
+                                </div>
+                            </div>
+                            <div class="staff-card busy">
+                                <div class="staff-avatar">MD</div>
+                                <div class="staff-info">
+                                    <h4>Mike Davis</h4>
+                                    <p>2 tasks assigned</p>
+                                    <span class="status-badge busy">Busy</span>
+                                </div>
+                            </div>
+                            <div class="staff-card available">
+                                <div class="staff-avatar">EW</div>
+                                <div class="staff-info">
+                                    <h4>Emily Wilson</h4>
+                                    <p>No tasks today</p>
+                                    <span class="status-badge available">Available</span>
+                                </div>
+                            </div>
+                            <div class="staff-card busy">
+                                <div class="staff-avatar">RB</div>
+                                <div class="staff-info">
+                                    <h4>Robert Brown</h4>
+                                    <p>1 task remaining</p>
+                                    <span class="status-badge busy">Busy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's Duty Schedule -->
+                <div class="card">
+                    <div class="card-header d-flex justify-between align-center">
+                        <h3><i class="fas fa-calendar-day"></i> Today's Duty Schedule</h3>
+                        <div class="schedule-filters">
+                            <select class="form-control" style="width: auto;">
+                                <option value="all">All Staff</option>
+                                <option value="available">Available Only</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="schedule-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-time">08:00 - 10:00</div>
+                                <div class="timeline-content">
+                                    <div class="duty-card">
+                                        <div class="duty-info">
+                                            <h4>Ward 101 Cleaning</h4>
+                                            <p><i class="fas fa-user"></i> John Smith</p>
+                                            <p><i class="fas fa-map-marker-alt"></i> 1st Floor, Room 101</p>
+                                        </div>
+                                        <div class="duty-status">
+                                            <span class="medical-badge badge-success">Completed</span>
+                                            <button class="btn btn-sm btn-outline">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-time">09:00 - 11:00</div>
+                                <div class="timeline-content">
+                                    <div class="duty-card">
+                                        <div class="duty-info">
+                                            <h4>ICU Sterilization</h4>
+                                            <p><i class="fas fa-user"></i> Sarah Johnson</p>
+                                            <p><i class="fas fa-map-marker-alt"></i> ICU Section</p>
+                                        </div>
+                                        <div class="duty-status">
+                                            <span class="medical-badge badge-warning">In Progress</span>
+                                            <button class="btn btn-sm btn-outline">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-time">10:30 - 12:00</div>
+                                <div class="timeline-content">
+                                    <div class="duty-card">
+                                        <div class="duty-info">
+                                            <h4>Corridor Sanitization</h4>
+                                            <p><i class="fas fa-user"></i> Mike Davis</p>
+                                            <p><i class="fas fa-map-marker-alt"></i> Main Corridor</p>
+                                        </div>
+                                        <div class="duty-status">
+                                            <span class="medical-badge badge-info">Scheduled</span>
+                                            <button class="btn btn-sm btn-outline">Reschedule</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/operator.js"></script>
+    <script>
+        document.getElementById('dutyAssignmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            
+            // Simulate API call
+            alert('Duty assigned successfully! Staff member has been notified.');
+            this.reset();
+        });
+
+        function assignQuickDuty(staffId) {
+            alert('Quick duty assignment for staff: ' + staffId);
+            // Implementation for quick duty assignment
+        }
+    </script>
+
+    <style>
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .staff-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e1e5e9;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .staff-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .staff-card.available {
+            border-color: #34a853;
+        }
+
+        .staff-card.busy {
+            border-color: #f9ab00;
+        }
+
+        .staff-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #1a73e8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        .staff-info h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .staff-info p {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.busy {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .schedule-timeline {
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .timeline-time {
+            min-width: 120px;
+            font-weight: 600;
+            color: #2c3e50;
+            padding-right: 20px;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .duty-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .duty-info h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .duty-info p {
+            color: #6c757d;
+            margin-bottom: 2px;
+            font-size: 0.9rem;
+        }
+
+        .duty-info i {
+            width: 16px;
+            margin-right: 5px;
+        }
+
+        .duty-status {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #1a73e8;
+            color: #1a73e8;
+        }
+
+        .btn-outline:hover {
+            background: #1a73e8;
+            color: white;
+        }
+    </style>
+</body>
+</html>

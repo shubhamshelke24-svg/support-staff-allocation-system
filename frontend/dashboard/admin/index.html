@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Hospital Staff Management</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Staff Allocation System</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item active">
+                    <i class="fas fa-chart-pie"></i> Overview
+                </a>
+                <a href="staff-management.html" class="menu-item">
+                    <i class="fas fa-users"></i> Staff Management
+                </a>
+                <a href="duties.html" class="menu-item">
+                    <i class="fas fa-tasks"></i> Duties & Allocation
+                </a>
+                <a href="attendance.html" class="menu-item">
+                    <i class="fas fa-calendar-check"></i> Attendance
+                </a>
+                <a href="performance.html" class="menu-item">
+                    <i class="fas fa-chart-line"></i> Performance
+                </a>
+                <a href="reports.html" class="menu-item">
+                    <i class="fas fa-file-alt"></i> Reports
+                </a>
+                <a href="settings.html" class="menu-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Navigation -->
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-chart-pie"></i> Dashboard Overview</h1>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">System Administrator</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">SA</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value">147</div>
+                        <div class="stat-label">Total Staff Members</div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-value">138</div>
+                        <div class="stat-label">Active Today</div>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-value">89%</div>
+                        <div class="stat-label">Tasks Completed</div>
+                    </div>
+                    
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Pending Requests</div>
+                    </div>
+                </div>
+
+                <!-- Charts and Data -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Department Distribution</h3>
+                                <p>Staff count by department</p>
+                            </div>
+                            <canvas id="departmentChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="col-6">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Performance Overview</h3>
+                                <p>Average ratings by department</p>
+                            </div>
+                            <canvas id="performanceChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Staff Member</th>
+                                        <th>Department</th>
+                                        <th>Activity</th>
+                                        <th>Time</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>John Smith</td>
+                                        <td>Cleaning</td>
+                                        <td>Completed Ward 101 Cleaning</td>
+                                        <td>10:30 AM</td>
+                                        <td><span class="medical-badge badge-success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sarah Johnson</td>
+                                        <td>Nursing</td>
+                                        <td>Patient Room Disinfection</td>
+                                        <td>10:15 AM</td>
+                                        <td><span class="medical-badge badge-warning">In Progress</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mike Davis</td>
+                                        <td>Laboratory</td>
+                                        <td>Equipment Sterilization</td>
+                                        <td>09:45 AM</td>
+                                        <td><span class="medical-badge badge-success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Emily Wilson</td>
+                                        <td>Cleaning</td>
+                                        <td>Requested Time Extension</td>
+                                        <td>09:30 AM</td>
+                                        <td><span class="medical-badge badge-info">Pending</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../assets/js/admin.js"></script>
+</body>
+</html>

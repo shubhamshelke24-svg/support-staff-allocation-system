@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Hospital Staff Management</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-hospital-alt"></i>
+                </div>
+                <h1>Hospital Staff Management</h1>
+                <p>Create Your Account</p>
+            </div>
+            
+            <div class="auth-body">
+                <form id="registerForm">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user"></i> Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" class="form-control" required>
+                            </div>
+                            <div class="form-col">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="form-col">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" id="dob" name="dob" class="form-control">
+                            </div>
+                            <div class="form-col">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="gender" class="form-control">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Information -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-key"></i> Account Information</h3>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="username">Username *</label>
+                                <input type="text" id="username" name="username" class="form-control" required>
+                                <small class="form-text">Minimum 4 characters</small>
+                            </div>
+                            <div class="form-col">
+                                <label for="employeeId">Employee ID *</label>
+                                <input type="text" id="employeeId" name="employeeId" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="password">Password *</label>
+                                <input type="password" id="password" name="password" class="form-control" required>
+                                <div class="password-strength">
+                                    <div class="strength-bar">
+                                        <div class="strength-fill" id="passwordStrength"></div>
+                                    </div>
+                                    <small class="strength-text" id="passwordText">Password strength</small>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <label for="confirmPassword">Confirm Password *</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                                <small class="form-text" id="passwordMatch"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Employment Details -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-briefcase"></i> Employment Details</h3>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="department">Department *</label>
+                                <select id="department" name="department" class="form-control" required>
+                                    <option value="">Select Department</option>
+                                    <option value="cleaning">Cleaning & Sanitation</option>
+                                    <option value="nursing">Nursing Support</option>
+                                    <option value="laboratory">Laboratory</option>
+                                    <option value="administrative">Administrative</option>
+                                    <option value="operational">Operational</option>
+                                </select>
+                            </div>
+                            <div class="form-col">
+                                <label for="position">Position *</label>
+                                <select id="position" name="position" class="form-control" required>
+                                    <option value="">Select Position</option>
+                                    <option value="staff">Staff Member</option>
+                                    <option value="supervisor">Supervisor</option>
+                                    <option value="operator">Department Operator</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="joinDate">Join Date</label>
+                                <input type="date" id="joinDate" name="joinDate" class="form-control">
+                            </div>
+                            <div class="form-col">
+                                <label for="shift">Preferred Shift</label>
+                                <select id="shift" name="shift" class="form-control">
+                                    <option value="">Select Shift</option>
+                                    <option value="morning">Morning (6 AM - 2 PM)</option>
+                                    <option value="evening">Evening (2 PM - 10 PM)</option>
+                                    <option value="night">Night (10 PM - 6 AM)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-phone-alt"></i> Emergency Contact</h3>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="emergencyName">Contact Name *</label>
+                                <input type="text" id="emergencyName" name="emergencyName" class="form-control" required>
+                            </div>
+                            <div class="form-col">
+                                <label for="emergencyPhone">Contact Phone *</label>
+                                <input type="tel" id="emergencyPhone" name="emergencyPhone" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="emergencyRelation">Relationship</label>
+                                <input type="text" id="emergencyRelation" name="emergencyRelation" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <span>I agree to the <a href="#" onclick="showTerms()">Terms and Conditions</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a></span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="notifications" name="notifications">
+                                <span>I want to receive notifications about my schedule and updates</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-auth">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="login.html">Sign In</a></p>
+                </div>
+
+                <!-- Demo Accounts Info -->
+                <div class="demo-accounts">
+                    <h4><i class="fas fa-info-circle"></i> Demo Accounts Available</h4>
+                    <div class="demo-account">
+                        <span>Admin Access</span>
+                        <span>admin / admin123</span>
+                    </div>
+                    <div class="demo-account">
+                        <span>Operator Access</span>
+                        <span>operator / operator123</span>
+                    </div>
+                    <div class="demo-account">
+                        <span>Staff Access</span>
+                        <span>staff / staff123</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Terms and Conditions</h3>
+                <span class="close" onclick="closeModal('termsModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="terms-content">
+                    <h4>Hospital Staff Management System Agreement</h4>
+                    <p><strong>Last Updated: January 15, 2024</strong></p>
+                    
+                    <h5>1. Account Registration</h5>
+                    <p>You must provide accurate and complete information during registration. Your account is personal and non-transferable.</p>
+                    
+                    <h5>2. System Usage</h5>
+                    <p>The system is for hospital staff management purposes only. Unauthorized access or misuse may result in account termination.</p>
+                    
+                    <h5>3. Data Privacy</h5>
+                    <p>We collect and process your data in accordance with our Privacy Policy and applicable data protection laws.</p>
+                    
+                    <h5>4. Responsibilities</h5>
+                    <p>You are responsible for maintaining the confidentiality of your account credentials and all activities under your account.</p>
+                    
+                    <h5>5. System Availability</h5>
+                    <p>We strive to maintain system availability but cannot guarantee uninterrupted access due to maintenance or unforeseen circumstances.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeModal('termsModal')">I Understand</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Privacy Policy</h3>
+                <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="privacy-content">
+                    <h4>Data Protection and Privacy</h4>
+                    <p><strong>Effective: January 15, 2024</strong></p>
+                    
+                    <h5>1. Information We Collect</h5>
+                    <p>We collect personal information including name, contact details, employment information, and work schedule data.</p>
+                    
+                    <h5>2. How We Use Your Information</h5>
+                    <p>Your information is used for staff management, scheduling, attendance tracking, and performance monitoring.</p>
+                    
+                    <h5>3. Data Security</h5>
+                    <p>We implement appropriate security measures to protect your personal information from unauthorized access.</p>
+                    
+                    <h5>4. Data Retention</h5>
+                    <p>We retain your data for as long as necessary to fulfill the purposes outlined in this policy.</p>
+                    
+                    <h5>5. Your Rights</h5>
+                    <p>You have the right to access, correct, or delete your personal information subject to applicable laws.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeModal('privacyModal')">I Understand</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.getElementById('registerForm');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const passwordStrength = document.getElementById('passwordStrength');
+            const passwordText = document.getElementById('passwordText');
+            const passwordMatch = document.getElementById('passwordMatch');
+
+            // Password strength checker
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                let text = 'Password strength';
+                let color = '#ea4335';
+
+                if (password.length >= 8) strength++;
+                if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+                if (password.match(/\d/)) strength++;
+                if (password.match(/[^a-zA-Z\d]/)) strength++;
+
+                switch(strength) {
+                    case 1:
+                        text = 'Weak';
+                        color = '#ea4335';
+                        break;
+                    case 2:
+                        text = 'Fair';
+                        color = '#f9ab00';
+                        break;
+                    case 3:
+                        text = 'Good';
+                        color = '#4285f4';
+                        break;
+                    case 4:
+                        text = 'Strong';
+                        color = '#34a853';
+                        break;
+                }
+
+                passwordStrength.style.width = (strength * 25) + '%';
+                passwordStrength.style.backgroundColor = color;
+                passwordText.textContent = text;
+                passwordText.style.color = color;
+            });
+
+            // Password confirmation checker
+            confirmPasswordInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                const confirmPassword = this.value;
+
+                if (confirmPassword === '') {
+                    passwordMatch.textContent = '';
+                    passwordMatch.style.color = '';
+                } else if (password === confirmPassword) {
+                    passwordMatch.textContent = 'Passwords match';
+                    passwordMatch.style.color = '#34a853';
+                } else {
+                    passwordMatch.textContent = 'Passwords do not match';
+                    passwordMatch.style.color = '#ea4335';
+                }
+            });
+
+            // Form submission
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Basic validation
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return;
+                }
+
+                if (password.length < 8) {
+                    alert('Password must be at least 8 characters long!');
+                    return;
+                }
+
+                if (!document.getElementById('terms').checked) {
+                    alert('Please accept the Terms and Conditions');
+                    return;
+                }
+
+                // Simulate registration process
+                const formData = new FormData(this);
+                const userData = Object.fromEntries(formData);
+
+                // Show loading state
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                submitBtn.disabled = true;
+
+                // Simulate API call
+                setTimeout(() => {
+                    alert('Account created successfully! Please wait for administrator approval.');
+                    window.location.href = 'login.html';
+                }, 2000);
+            });
+
+            // Set default join date to today
+            document.getElementById('joinDate').valueAsDate = new Date();
+        });
+
+        function showTerms() {
+            document.getElementById('termsModal').style.display = 'block';
+        }
+
+        function showPrivacy() {
+            document.getElementById('privacyModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const termsModal = document.getElementById('termsModal');
+            const privacyModal = document.getElementById('privacyModal');
+            
+            if (event.target === termsModal) {
+                closeModal('termsModal');
+            }
+            if (event.target === privacyModal) {
+                closeModal('privacyModal');
+            }
+        }
+    </script>
+
+    <style>
+        .form-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .form-section h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-section h3 i {
+            color: #1a73e8;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+
+        .form-col {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 250px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-text {
+            display: block;
+            margin-top: 5px;
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+        }
+
+        .strength-bar {
+            width: 100%;
+            height: 4px;
+            background: #e1e5e9;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-text {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-label input {
+            margin-right: 10px;
+            margin-top: 2px;
+        }
+
+        .checkbox-label a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+
+        .terms-content, .privacy-content {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .terms-content h4, .privacy-content h4 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .terms-content h5, .privacy-content h5 {
+            margin: 15px 0 8px 0;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .terms-content p, .privacy-content p {
+            margin-bottom: 10px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e1e5e9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .modal-body {
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #e1e5e9;
+            text-align: right;
+        }
+
+        .close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .form-col {
+                flex: 0 0 100%;
+                margin-bottom: 15px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+            
+            .form-section h3 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</body>
+</html>

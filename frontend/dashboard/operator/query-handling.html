@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Handling - Operator Dashboard</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hospital-alt"></i> HMS
+                </div>
+                <div class="sidebar-subtitle">Cleaning Department</div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="allocate-duties.html" class="menu-item">
+                    <i class="fas fa-tasks"></i> Allocate Duties
+                </a>
+                <a href="monitor-tasks.html" class="menu-item">
+                    <i class="fas fa-eye"></i> Monitor Tasks
+                </a>
+                <a href="verify-proofs.html" class="menu-item">
+                    <i class="fas fa-check-circle"></i> Verify Proofs
+                </a>
+                <a href="query-handling.html" class="menu-item active">
+                    <i class="fas fa-comments"></i> Query Handling
+                </a>
+                <a href="../../auth/login.html" class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <div class="nav-title">
+                    <h1><i class="fas fa-comments"></i> Query Handling</h1>
+                    <small>Manage staff queries and requests</small>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">Department Operator</div>
+                        <div class="user-role">Cleaning Department</div>
+                    </div>
+                    <div class="avatar" id="userAvatar">OP</div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Query Statistics -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Pending Queries</div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Resolved Today</div>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Extension Requests</div>
+                    </div>
+                    
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Urgent Issues</div>
+                    </div>
+                </div>
+
+                <!-- Query Filters -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <label>Query Type</label>
+                                <select class="form-control" onchange="filterQueries(this.value)">
+                                    <option value="all">All Queries</option>
+                                    <option value="extension">Time Extension</option>
+                                    <option value="equipment">Equipment Issue</option>
+                                    <option value="assistance">Need Assistance</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label>Status</label>
+                                <select class="form-control" onchange="filterByStatus(this.value)">
+                                    <option value="all">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="resolved">Resolved</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label>Priority</label>
+                                <select class="form-control" onchange="filterByPriority(this.value)">
+                                    <option value="all">All Priorities</option>
+                                    <option value="urgent">Urgent</option>
+                                    <option value="high">High</option>
+                                    <option value="normal">Normal</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label>Date</label>
+                                <input type="date" class="form-control" onchange="filterByDate(this.value)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Queries -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-clock"></i> Pending Queries</h3>
+                        <p>Require your immediate attention</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="queries-list">
+                            <!-- Query Item 1 -->
+                            <div class="query-item urgent">
+                                <div class="query-header">
+                                    <div class="query-meta">
+                                        <div class="staff-avatar-sm">JS</div>
+                                        <div>
+                                            <h4>John Smith</h4>
+                                            <p>Ward 101 Cleaning • 10:30 AM</p>
+                                        </div>
+                                    </div>
+                                    <div class="query-tags">
+                                        <span class="medical-badge badge-danger">Urgent</span>
+                                        <span class="medical-badge badge-warning">Extension Request</span>
+                                    </div>
+                                </div>
+                                <div class="query-content">
+                                    <p><strong>Query:</strong> Need 15 minutes extension for Ward 101 cleaning. Additional sanitization required due to spillage incident.</p>
+                                    <div class="query-details">
+                                        <p><i class="fas fa-tasks"></i> <strong>Task:</strong> Ward 101 Cleaning & Disinfection</p>
+                                        <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> 1st Floor, Room 101</p>
+                                        <p><i class="fas fa-clock"></i> <strong>Original Time:</strong> 08:00 AM - 10:00 AM</p>
+                                    </div>
+                                </div>
+                                <div class="query-actions">
+                                    <button class="btn btn-success" onclick="approveExtension('query1', 15)">
+                                        <i class="fas fa-check"></i> Approve Extension
+                                    </button>
+                                    <button class="btn btn-danger" onclick="rejectExtension('query1')">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                    <button class="btn btn-info" onclick="openChat('query1')">
+                                        <i class="fas fa-comment"></i> Chat
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Query Item 2 -->
+                            <div class="query-item high">
+                                <div class="query-header">
+                                    <div class="query-meta">
+                                        <div class="staff-avatar-sm">SJ</div>
+                                        <div>
+                                            <h4>Sarah Johnson</h4>
+                                            <p>ICU Sterilization • 10:15 AM</p>
+                                        </div>
+                                    </div>
+                                    <div class="query-tags">
+                                        <span class="medical-badge badge-warning">High Priority</span>
+                                        <span class="medical-badge badge-info">Equipment Issue</span>
+                                    </div>
+                                </div>
+                                <div class="query-content">
+                                    <p><strong>Query:</strong> Sterilization machine not working properly. Need technical support or replacement equipment.</p>
+                                    <div class="query-details">
+                                        <p><i class="fas fa-tasks"></i> <strong>Task:</strong> ICU Area Sterilization</p>
+                                        <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> ICU Section, 3rd Floor</p>
+                                        <p><i class="fas fa-tools"></i> <strong>Equipment:</strong> Sterilization Machine #ST-205</p>
+                                    </div>
+                                </div>
+                                <div class="query-actions">
+                                    <button class="btn btn-primary" onclick="assignTechnician('query2')">
+                                        <i class="fas fa-user-cog"></i> Assign Technician
+                                    </button>
+                                    <button class="btn btn-warning" onclick="provideAlternative('query2')">
+                                        <i class="fas fa-exchange-alt"></i> Provide Alternative
+                                    </button>
+                                    <button class="btn btn-info" onclick="openChat('query2')">
+                                        <i class="fas fa-comment"></i> Chat
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Query Item 3 -->
+                            <div class="query-item normal">
+                                <div class="query-header">
+                                    <div class="query-meta">
+                                        <div class="staff-avatar-sm">MD</div>
+                                        <div>
+                                            <h4>Mike Davis</h4>
+                                            <p>Corridor Sanitization • 09:45 AM</p>
+                                        </div>
+                                    </div>
+                                    <div class="query-tags">
+                                        <span class="medical-badge badge-info">Normal</span>
+                                        <span class="medical-badge badge-secondary">Assistance Needed</span>
+                                    </div>
+                                </div>
+                                <div class="query-content">
+                                    <p><strong>Query:</strong> Need additional cleaning supplies for main corridor. Running low on disinfectant and floor cleaner.</p>
+                                    <div class="query-details">
+                                        <p><i class="fas fa-tasks"></i> <strong>Task:</strong> Corridor Sanitization</p>
+                                        <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> Main Corridor, 2nd Floor</p>
+                                        <p><i class="fas fa-box"></i> <strong>Supplies Needed:</strong> Disinfectant, Floor Cleaner</p>
+                                    </div>
+                                </div>
+                                <div class="query-actions">
+                                    <button class="btn btn-success" onclick="approveSupplies('query3')">
+                                        <i class="fas fa-check"></i> Approve Supplies
+                                    </button>
+                                    <button class="btn btn-warning" onclick="scheduleDelivery('query3')">
+                                        <i class="fas fa-truck"></i> Schedule Delivery
+                                    </button>
+                                    <button class="btn btn-info" onclick="openChat('query3')">
+                                        <i class="fas fa-comment"></i> Chat
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resolved Queries -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-check-circle"></i> Recently Resolved</h3>
+                        <p>Queries resolved in last 24 hours</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Staff</th>
+                                        <th>Query Type</th>
+                                        <th>Description</th>
+                                        <th>Submitted</th>
+                                        <th>Resolved</th>
+                                        <th>Resolution</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="staff-cell">
+                                                <div class="staff-avatar-sm">EW</div>
+                                                Emily Wilson
+                                            </div>
+                                        </td>
+                                        <td>Equipment Issue</td>
+                                        <td>Vacuum cleaner not working</td>
+                                        <td>08:30 AM</td>
+                                        <td>08:45 AM</td>
+                                        <td>Replaced equipment</td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm" onclick="viewQueryDetails('resolved1')">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="staff-cell">
+                                                <div class="staff-avatar-sm">RB</div>
+                                                Robert Brown
+                                            </div>
+                                        </td>
+                                        <td>Time Extension</td>
+                                        <td>Need extra time for deep cleaning</td>
+                                        <td>09:15 AM</td>
+                                        <td>09:20 AM</td>
+                                        <td>15 minutes approved</td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="modal">
+        <div class="modal-content chat-modal">
+            <div class="chat-header">
+                <h3>Chat with Staff Member</h3>
+                <span class="close" onclick="closeChat()">&times;</span>
+            </div>
+            <div class="chat-body">
+                <div class="chat-messages">
+                    <div class="message staff-message">
+                        <div class="message-sender">John Smith</div>
+                        <div class="message-content">I need 15 minutes extension for Ward 101 cleaning due to additional sanitization required.</div>
+                        <div class="message-time">10:30 AM</div>
+                    </div>
+                    <div class="message operator-message">
+                        <div class="message-sender">You</div>
+                        <div class="message-content">Understood. Can you specify what additional work is needed?</div>
+                        <div class="message-time">10:31 AM</div>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" placeholder="Type your message..." id="chatMessage">
+                    <button class="btn btn-primary" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/operator.js"></script>
+    <script>
+        function filterQueries(type) {
+            console.log('Filtering queries by type:', type);
+            // Implementation for filtering
+        }
+
+        function filterByStatus(status) {
+            console.log('Filtering queries by status:', status);
+            // Implementation for status filtering
+        }
+
+        function filterByPriority(priority) {
+            console.log('Filtering queries by priority:', priority);
+            // Implementation for priority filtering
+        }
+
+        function filterByDate(date) {
+            console.log('Filtering queries by date:', date);
+            // Implementation for date filtering
+        }
+
+        function approveExtension(queryId, minutes) {
+            if (confirm(`Approve ${minutes} minutes extension?`)) {
+                // API call to approve extension
+                alert(`Extension approved for ${minutes} minutes. Staff has been notified.`);
+                document.querySelector(`[onclick*="${queryId}"]`).closest('.query-item').remove();
+            }
+        }
+
+        function rejectExtension(queryId) {
+            const reason = prompt('Reason for rejection:');
+            if (reason) {
+                // API call to reject extension
+                alert('Extension rejected. Staff has been notified.');
+                document.querySelector(`[onclick*="${queryId}"]`).closest('.query-item').remove();
+            }
+        }
+
+        function assignTechnician(queryId) {
+            alert('Technician assigned to resolve equipment issue.');
+            document.querySelector(`[onclick*="${queryId}"]`).closest('.query-item').remove();
+        }
+
+        function provideAlternative(queryId) {
+            alert('Alternative equipment provided to staff.');
+            document.querySelector(`[onclick*="${queryId}"]`).closest('.query-item').remove();
+        }
+
+        function approveSupplies(queryId) {
+            alert('Supplies approved. Delivery scheduled.');
+            document.querySelector(`[onclick*="${queryId}"]`).closest('.query-item').remove();
+        }
+
+        function scheduleDelivery(queryId) {
+            alert('Supply delivery scheduled.');
+            document.querySelector(`[onclick*="${queryId}"]`).closest('.query-item').remove();
+        }
+
+        function openChat(queryId) {
+            document.getElementById('chatModal').style.display = 'block';
+        }
+
+        function closeChat() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+
+        function sendMessage() {
+            const message = document.getElementById('chatMessage').value;
+            if (message.trim()) {
+                // API call to send message
+                alert('Message sent to staff.');
+                document.getElementById('chatMessage').value = '';
+            }
+        }
+
+        function viewQueryDetails(queryId) {
+            alert('Viewing query details: ' + queryId);
+            // Implementation for detailed query view
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('chatModal');
+            if (event.target === modal) {
+                closeChat();
+            }
+        }
+    </script>
+
+    <style>
+        .queries-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .query-item {
+            border: 1px solid #e1e5e9;
+            border-radius: 10px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .query-item.urgent {
+            border-left: 4px solid #ea4335;
+            background: #fff5f5;
+        }
+
+        .query-item.high {
+            border-left: 4px solid #f9ab00;
+            background: #fffbf0;
+        }
+
+        .query-item.normal {
+            border-left: 4px solid #1a73e8;
+        }
+
+        .query-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .query-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .query-meta h4 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .query-meta p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .query-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .query-content {
+            margin-bottom: 15px;
+        }
+
+        .query-content p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .query-details {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .query-details p {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .query-details i {
+            width: 16px;
+            margin-right: 8px;
+            color: #1a73e8;
+        }
+
+        .query-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .chat-modal {
+            max-width: 500px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid #e1e5e9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            position: relative;
+        }
+
+        .staff-message {
+            align-self: flex-start;
+            background: #e8f0fe;
+            border-bottom-left-radius: 4px;
+        }
+
+        .operator-message {
+            align-self: flex-end;
+            background: #1a73e8;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+
+        .message-content {
+            font-size: 0.9rem;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid #e1e5e9;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #e1e5e9;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .chat-input input:focus {
+            border-color: #1a73e8;
+        }
+
+        @media (max-width: 768px) {
+            .query-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .query-actions {
+                flex-direction: column;
+            }
+            
+            .query-actions .btn {
+                width: 100%;
+            }
+            
+            .chat-modal {
+                width: 95%;
+                height: 80%;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+        }
+    </style>
+</body>
+</html>
